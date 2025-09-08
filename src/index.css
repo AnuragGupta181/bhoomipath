@@ -8,35 +8,56 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Earthster Brand Colors */
+    --background: 210 20% 8%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 210 20% 10%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 210 20% 10%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 176 100% 42%;
+    --primary-foreground: 210 20% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 15% 15%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 15% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 176 100% 42%;
+    --accent-foreground: 210 20% 8%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 15% 25%;
+    --input: 210 15% 25%;
+    --ring: 176 100% 42%;
 
     --radius: 0.5rem;
+    
+    /* Earthster Design Tokens */
+    --earthster-cyan: 176 100% 42%;
+    --earthster-dark: 210 20% 8%;
+    --earthster-darker: 210 25% 6%;
+    --earthster-card: 210 20% 10%;
+    --earthster-border: 210 15% 25%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--earthster-cyan)), hsl(var(--earthster-cyan) / 0.8));
+    --gradient-hero: linear-gradient(180deg, hsl(var(--earthster-darker)), hsl(var(--earthster-dark)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--earthster-card)), hsl(var(--earthster-dark)));
+    
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(var(--earthster-cyan) / 0.3);
+    --shadow-card: 0 10px 30px -10px hsl(var(--earthster-darker) / 0.5);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +122,71 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary;
+  }
+}
+
+@layer components {
+  /* Earthster component styles */
+  .earthster-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .earthster-card {
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-card);
+  }
+  
+  .earthster-hero-bg {
+    background: var(--gradient-hero);
+  }
+  
+  .earthster-text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .earthster-network-node {
+    @apply relative rounded-full bg-primary transition-all duration-300 hover:scale-110;
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
+  }
+  
+  .earthster-network-line {
+    @apply absolute opacity-30;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent);
+  }
+  
+  .earthster-btn-glow {
+    @apply relative overflow-hidden transition-all duration-300;
+    background: hsl(var(--primary));
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  
+  .earthster-btn-glow:hover {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.5);
+    transform: translateY(-1px);
+  }
+  
+  .earthster-input {
+    @apply w-full px-4 py-3 rounded-xl border border-input bg-card/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200;
   }
 }
