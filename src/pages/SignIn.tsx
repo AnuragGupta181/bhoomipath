@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
+import Header from "@/components/Header";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +26,9 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen flex earthster-hero-bg">
+    <div className="min-h-screen">
+      <Header />
+      <div className="min-h-screen flex earthster-hero-bg pt-20">
       {/* Left Side - Content */}
       <div className="flex-1 flex flex-col justify-center px-8 lg:px-16">
         <div className="max-w-lg">
@@ -165,6 +168,7 @@ const SignIn = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };
