@@ -38,11 +38,11 @@ const ContactSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl mx-auto">
-          <div className="bhoomlpath-card rounded-2xl p-8 animate-fade-in">
+          <div className="earthster-card rounded-2xl p-8 animate-fade-in">
             <div className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                 Start Your Journey Towards{" "}
-                <span className="bhoomlpath-text-gradient">Sustainable Innovation</span> Today
+                <span className="earthster-text-gradient">Sustainable Innovation</span> Today
               </h2>
               <p className="text-primary text-lg font-medium">
                 Book a meeting now in the form below!
@@ -59,7 +59,7 @@ const ContactSection = () => {
                     type="text"
                     name="firstName"
                     required
-                    className="bhoomlpath-input"
+                    className="earthster-input"
                     value={formData.firstName}
                     onChange={handleInputChange}
                   />
@@ -73,7 +73,7 @@ const ContactSection = () => {
                     type="text"
                     name="lastName"
                     required
-                    className="bhoomlpath-input"
+                    className="earthster-input"
                     value={formData.lastName}
                     onChange={handleInputChange}
                   />
@@ -88,7 +88,7 @@ const ContactSection = () => {
                   type="text"
                   name="companyName"
                   required
-                  className="bhoomlpath-input"
+                  className="earthster-input"
                   value={formData.companyName}
                   onChange={handleInputChange}
                 />
@@ -101,7 +101,7 @@ const ContactSection = () => {
                 <input
                   type="tel"
                   name="phoneNumber"
-                  className="bhoomlpath-input"
+                  className="earthster-input"
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
                 />
@@ -115,7 +115,7 @@ const ContactSection = () => {
                   type="email"
                   name="businessEmail"
                   required
-                  className="bhoomlpath-input"
+                  className="earthster-input"
                   value={formData.businessEmail}
                   onChange={handleInputChange}
                 />
@@ -123,7 +123,7 @@ const ContactSection = () => {
 
               <Button 
                 type="submit" 
-                className="bhoomlpath-btn-glow w-full py-4 text-lg font-semibold"
+                className="earthster-btn-glow w-full py-4 text-lg font-semibold"
               >
                 Submit
               </Button>

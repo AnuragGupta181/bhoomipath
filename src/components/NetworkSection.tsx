@@ -19,7 +19,7 @@ const NetworkSection = () => {
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-block bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-8 mb-8">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Bring the cost per LCA <span className="bhoomlpath-text-gradient">down to 10£/LCA</span>
+              Bring the cost per LCA <span className="earthster-text-gradient">down to 10£/LCA</span>
             </h2>
             <p className="text-muted-foreground text-sm">
               *based on customer case study, exact amount may vary
@@ -40,22 +40,22 @@ const NetworkSection = () => {
             </div>
 
             {/* Network Nodes */}
-            <div className="absolute top-8 left-8 w-12 h-12 bhoomlpath-network-node animate-float"></div>
-            <div className="absolute top-16 right-12 w-8 h-8 bhoomlpath-network-node animate-float" style={{animationDelay: '0.5s'}}></div>
-            <div className="absolute bottom-20 left-16 w-16 h-16 bhoomlpath-network-node animate-float" style={{animationDelay: '1s'}}></div>
-            <div className="absolute bottom-8 right-8 w-6 h-6 bhoomlpath-network-node animate-float" style={{animationDelay: '1.5s'}}></div>
+            <div className="absolute top-8 left-8 w-12 h-12 earthster-network-node animate-float"></div>
+            <div className="absolute top-16 right-12 w-8 h-8 earthster-network-node animate-float" style={{animationDelay: '0.5s'}}></div>
+            <div className="absolute bottom-20 left-16 w-16 h-16 earthster-network-node animate-float" style={{animationDelay: '1s'}}></div>
+            <div className="absolute bottom-8 right-8 w-6 h-6 earthster-network-node animate-float" style={{animationDelay: '1.5s'}}></div>
 
             {/* Connection Lines */}
-            <div className="absolute top-14 left-20 w-32 h-px bhoomlpath-network-line transform rotate-45"></div>
-            <div className="absolute top-22 right-20 w-24 h-px bhoomlpath-network-line transform -rotate-45"></div>
-            <div className="absolute bottom-32 left-32 w-40 h-px bhoomlpath-network-line transform rotate-12"></div>
+            <div className="absolute top-14 left-20 w-32 h-px earthster-network-line transform rotate-45"></div>
+            <div className="absolute top-22 right-20 w-24 h-px earthster-network-line transform -rotate-45"></div>
+            <div className="absolute bottom-32 left-32 w-40 h-px earthster-network-line transform rotate-12"></div>
           </div>
         </div>
 
         {/* Description Text */}
         <div className="max-w-3xl mx-auto text-center animate-fade-in">
           <p className="text-lg md:text-xl text-primary mb-6 font-semibold">
-            With BhoomlPath's approach to scale you can have LCA results for all your 
+            With Earthster's approach to scale you can have LCA results for all your 
             products in the time it takes you to do one LCA in other software.
           </p>
           <p className="text-muted-foreground">

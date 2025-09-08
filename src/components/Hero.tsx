@@ -3,7 +3,7 @@ import earthHero from "@/assets/earth-hero.jpg";
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bhoomlpath-hero-bg overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center earthster-hero-bg overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -18,7 +18,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
             Calculate and communicate{" "}
-            <span className="bhoomlpath-text-gradient">environmental sustainability</span>{" "}
+            <span className="earthster-text-gradient">environmental sustainability</span>{" "}
             of ALL your products
           </h1>
           
@@ -29,7 +29,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
             <Button 
               size="lg" 
-              className="bhoomlpath-btn-glow text-lg px-8 py-6 rounded-full"
+              className="earthster-btn-glow text-lg px-8 py-6 rounded-full"
               asChild
             >
               <a href="/signin">GET STARTED</a>

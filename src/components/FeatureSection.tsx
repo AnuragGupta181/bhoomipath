@@ -36,11 +36,11 @@ const FeatureSection = () => {
                 {feature.icon}
               </div>
               <h3 className="text-xl md:text-2xl font-semibold mb-4 text-foreground">
-                {feature.title} <span className="bhoomlpath-text-gradient">{feature.highlight}</span>
+                {feature.title} <span className="earthster-text-gradient">{feature.highlight}</span>
                 {feature.subtitle && (
                   <>
                     {" "}{feature.subtitle}
-                    {feature.highlightEnd && <span className="bhoomlpath-text-gradient"> {feature.highlightEnd}</span>}
+                    {feature.highlightEnd && <span className="earthster-text-gradient"> {feature.highlightEnd}</span>}
                   </>
                 )}
               </h3>

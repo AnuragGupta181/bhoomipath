@@ -28,7 +28,7 @@ const SignIn = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <div className="min-h-screen flex bhoomlpath-hero-bg pt-20">
+      <div className="min-h-screen flex earthster-hero-bg pt-20">
       {/* Left Side - Content */}
       <div className="flex-1 flex flex-col justify-center px-8 lg:px-16">
         <div className="max-w-lg">
@@ -82,7 +82,7 @@ const SignIn = () => {
                 type="email"
                 name="email"
                 required
-                className="bhoomlpath-input"
+                className="earthster-input"
                 value={formData.email}
                 onChange={handleInputChange}
               />
@@ -97,7 +97,7 @@ const SignIn = () => {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   required
-                  className="bhoomlpath-input pr-12"
+                  className="earthster-input pr-12"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -128,7 +128,7 @@ const SignIn = () => {
 
             <Button 
               type="submit" 
-              className="bhoomlpath-btn-glow w-full py-3 text-lg font-semibold"
+              className="earthster-btn-glow w-full py-3 text-lg font-semibold"
             >
               SIGN IN
             </Button>
