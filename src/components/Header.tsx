@@ -30,7 +30,7 @@ const Header = () => {
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <div className="text-2xl font-bold">
-            <span className="text-primary">earthster</span>
+            <span className="text-primary">BhoomlPath</span>
           </div>
         </div>
 
@@ -55,7 +55,7 @@ const Header = () => {
           <Button variant="outline" className="hidden md:inline-flex" asChild>
             <a href="/signin">LOG IN</a>
           </Button>
-          <Button className="earthster-btn-glow">
+          <Button className="bhoomlpath-btn-glow">
             GET A FREE TRIAL
           </Button>
           

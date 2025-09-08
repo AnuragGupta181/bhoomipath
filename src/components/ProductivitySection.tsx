@@ -20,7 +20,7 @@ const ProductivitySection = () => {
               </p>
               <h2 className="text-3xl md:text-5xl font-bold leading-tight">
                 BOOST YOUR PRODUCTIVITY{" "}
-                <span className="earthster-text-gradient">WITH EARTHSTER</span>
+                <span className="bhoomlpath-text-gradient">WITH BHOOMLPATH</span>
               </h2>
             </div>
 
@@ -40,12 +40,12 @@ const ProductivitySection = () => {
 
           {/* Right Visualization */}
           <div className="relative animate-scale-in">
-            <div className="earthster-card rounded-2xl p-8 relative overflow-hidden">
+            <div className="bhoomlpath-card rounded-2xl p-8 relative overflow-hidden">
               {/* Mock interface elements */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">← Back</span>
-                  <span className="text-primary font-semibold">earthster</span>
+                  <span className="text-primary font-semibold">BhoomlPath</span>
                 </div>
                 
                 <div className="space-y-3">

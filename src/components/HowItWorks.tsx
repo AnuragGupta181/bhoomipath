@@ -4,7 +4,7 @@ const HowItWorks = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span className="earthster-text-gradient">HOW IT WORKS</span>
+            <span className="bhoomlpath-text-gradient">HOW IT WORKS</span>
           </h2>
         </div>
 
@@ -13,13 +13,13 @@ const HowItWorks = () => {
           {[1, 2, 3].map((step, index) => (
             <div 
               key={step}
-              className="animate-fade-in earthster-card rounded-2xl p-6 hover:scale-105 transition-transform duration-300"
+              className="animate-fade-in bhoomlpath-card rounded-2xl p-6 hover:scale-105 transition-transform duration-300"
               style={{animationDelay: `${index * 0.2}s`}}
             >
               {/* Mock Interface */}
               <div className="bg-background/50 rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="text-xs text-muted-foreground">earthster</div>
+                  <div className="text-xs text-muted-foreground">BhoomlPath</div>
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
@@ -54,8 +54,8 @@ const HowItWorks = () => {
         </div>
 
         <div className="text-center mt-12 animate-fade-in">
-          <button className="earthster-btn-glow px-8 py-4 rounded-full text-lg font-semibold">
-            START USING EARTHSTER TODAY!
+          <button className="bhoomlpath-btn-glow px-8 py-4 rounded-full text-lg font-semibold">
+            START USING BHOOMLPATH TODAY!
           </button>
         </div>
       </div>

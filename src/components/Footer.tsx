@@ -8,11 +8,11 @@ const Footer = () => {
           {/* Left Column - Logo and Description */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-primary">earthster</span>
+              <span className="text-2xl font-bold text-primary">BhoomlPath</span>
             </div>
             
             <p className="text-muted-foreground max-w-md">
-              Earthster is a tech company specializing in LCA technologies, 
+              BhoomlPath is a tech company specializing in LCA technologies, 
               databases and projects, founded by Environmental scientists
             </p>
           </div>
