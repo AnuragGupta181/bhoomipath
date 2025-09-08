@@ -30,7 +30,9 @@ const Header = () => {
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <div className="text-2xl font-bold">
-            <span className="text-primary">earthster</span>
+            <a href="/" className="text-primary hover:text-primary/80 transition-colors" style={{fontFamily: 'Merienda One, cursive'}}>
+              BhoomiPath
+            </a>
           </div>
         </div>
 
