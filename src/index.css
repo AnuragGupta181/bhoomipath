@@ -144,11 +144,6 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Heading styles */
-  .heading-wonderbar {
-    font-family: 'Wonderbar', cursive;
-  }
-  
   /* Earthster component styles */
   .earthster-glow {
     box-shadow: var(--shadow-glow);

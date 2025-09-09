@@ -16,7 +16,7 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 relative z-10 text-center">
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight heading-wonderbar">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
             Calculate and communicate{" "}
             <span className="earthster-text-gradient">environmental sustainability</span>{" "}
             of ALL your products

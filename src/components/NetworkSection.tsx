@@ -18,7 +18,7 @@ const NetworkSection = () => {
         {/* Cost Reduction Highlight */}
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-block bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-8 mb-8">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 heading-wonderbar">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
               Bring the cost per LCA <span className="earthster-text-gradient">down to 10£/LCA</span>
             </h2>
             <p className="text-muted-foreground text-sm">

@@ -40,7 +40,7 @@ const ContactSection = () => {
         <div className="max-w-2xl mx-auto">
           <div className="earthster-card rounded-2xl p-8 animate-fade-in">
             <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground heading-wonderbar">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                 Start Your Journey Towards{" "}
                 <span className="earthster-text-gradient">Sustainable Innovation</span> Today
               </h2>
