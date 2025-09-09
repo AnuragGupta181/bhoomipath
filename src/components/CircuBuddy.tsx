@@ -1,18 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, ArrowRight, RotateCcw, Download, MessageCircle, Send, SkipForward } from 'lucide-react';
+import { RotateCcw, Download, MessageCircle, Send, SkipForward } from 'lucide-react';
 import { quizQuestions } from '@/data/quizQuestions';
 import { QuizState, QuizData, QuizPayload } from '@/types/quiz';
 import { useToast } from '@/hooks/use-toast';
 
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  options?: string[];
+  questionId?: keyof QuizData | string;
+  questionType?: 'select' | 'number';
+  unit?: string;
+  allowSkip?: boolean;
+}
+
 const CircuBuddy = () => {
   const { toast } = useToast();
-  const [mode, setMode] = useState<'welcome' | 'quiz' | 'chat'>('welcome');
-  const [chatMessages, setChatMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
@@ -21,42 +30,63 @@ const CircuBuddy = () => {
     results: null,
     userGoal: ''
   });
+  const [isQuestionMode, setIsQuestionMode] = useState(true);
 
-  const startQuiz = () => {
-    setMode('quiz');
-    setQuizState(prev => ({ ...prev, currentQuestion: 0 }));
-  };
-
-  const startChat = () => {
-    setMode('chat');
-    setChatMessages([{
+  // Initialize chat with intro and first question
+  useEffect(() => {
+    const introMessage: ChatMessage = {
       role: 'assistant',
-      content: "Great! I'm here to help with any LCA questions. Ask me about reducing emissions, circularity options, or anything sustainability-related! 🌱"
-    }]);
-  };
-
-  const handleChatSend = () => {
-    if (!chatInput.trim()) return;
+      content: "Hi, I'm CircuBuddy! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Let's start!"
+    };
     
-    const userMessage = chatInput.trim();
-    setChatMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    setChatInput('');
+    setChatMessages([introMessage]);
     
+    // Start first question after brief delay
     setTimeout(() => {
-      let response = "That's a great question! ";
-      if (userMessage.toLowerCase().includes('emission')) {
-        response += "To reduce emissions, consider: switching to renewable energy, optimizing transport routes, or exploring circular economy options. Want to model this in a quiz?";
-      } else if (userMessage.toLowerCase().includes('circular')) {
-        response += "Circularity means keeping materials in use longer. Options include recycling, refurbishing, or remanufacturing. Let's explore this in a quiz!";
-      } else {
-        response += "I can help you explore this through our LCA quiz. Would you like to start the quiz to model different scenarios?";
-      }
-      
-      setChatMessages(prev => [...prev, { role: 'assistant', content: response }]);
+      askNextQuestion(0);
     }, 1000);
+  }, []);
+
+  const askNextQuestion = (questionIndex: number) => {
+    const totalQuestions = quizQuestions.length + 1; // +1 for goal question
+    
+    if (questionIndex >= quizQuestions.length) {
+      // Ask goal question
+      const goalMessage: ChatMessage = {
+        role: 'assistant',
+        content: `Question ${questionIndex + 1} of ${totalQuestions}: What is your goal for this LCA run?`,
+        questionId: 'userGoal' as keyof QuizData,
+        questionType: 'number', // Using number type for text area
+        allowSkip: false
+      };
+      setChatMessages(prev => [...prev, goalMessage]);
+      return;
+    }
+
+    const question = quizQuestions[questionIndex];
+    const progress = Math.round(((questionIndex + 1) / totalQuestions) * 100);
+    
+    const questionMessage: ChatMessage = {
+      role: 'assistant',
+      content: `Question ${questionIndex + 1} of ${totalQuestions} (${progress}% complete): ${question.title}`,
+      options: question.options,
+      questionId: question.id,
+      questionType: question.type,
+      unit: question.unit,
+      allowSkip: !question.required
+    };
+
+    setChatMessages(prev => [...prev, questionMessage]);
   };
 
-  const handleAnswer = (questionId: keyof QuizData, value: string | number) => {
+  const handleAnswer = (questionId: keyof QuizData | string, value: string | number) => {
+    if (questionId === 'userGoal') {
+      setQuizState(prev => ({ ...prev, userGoal: value as string }));
+      setChatMessages(prev => [...prev, { role: 'user', content: value as string }]);
+      submitQuiz();
+      return;
+    }
+
     const numericFields = ['Energy_MJ_per_kg', 'Quantity_kg', 'Energy_MJ_total', 'Transport_km', 'Transport_emissions_kgCO2', 'Water_use_m3_per_ton', 'Process_emissions_kgCO2', 'Total_emissions_kgCO2', 'Emission_factor_kgCO2_per_MJ'];
     
     const newAnswers = {
@@ -68,47 +98,49 @@ const CircuBuddy = () => {
     if (questionId === 'Energy_MJ_per_kg' || questionId === 'Quantity_kg') {
       const energyPerKg = questionId === 'Energy_MJ_per_kg' ? Number(value) : (newAnswers.Energy_MJ_per_kg || 0);
       const quantity = questionId === 'Quantity_kg' ? Number(value) : (newAnswers.Quantity_kg || 0);
-      newAnswers.Energy_MJ_total = energyPerKg * quantity;
+      if (energyPerKg && quantity) {
+        newAnswers.Energy_MJ_total = energyPerKg * quantity;
+      }
     }
 
     // Auto-calculate Total_emissions_kgCO2 = Process_emissions_kgCO2 + Transport_emissions_kgCO2
     if (questionId === 'Process_emissions_kgCO2' || questionId === 'Transport_emissions_kgCO2') {
       const processEmissions = questionId === 'Process_emissions_kgCO2' ? Number(value) : (newAnswers.Process_emissions_kgCO2 || 0);
       const transportEmissions = questionId === 'Transport_emissions_kgCO2' ? Number(value) : (newAnswers.Transport_emissions_kgCO2 || 0);
-      newAnswers.Total_emissions_kgCO2 = processEmissions + transportEmissions;
-    }
-    
-    setQuizState(prev => ({ ...prev, answers: newAnswers }));
-  };
-
-  const nextQuestion = () => {
-    if (quizState.currentQuestion < quizQuestions.length) {
-      if (quizState.currentQuestion === quizQuestions.length - 1) {
-        setQuizState(prev => ({ ...prev, currentQuestion: quizQuestions.length }));
-      } else {
-        setQuizState(prev => ({ ...prev, currentQuestion: prev.currentQuestion + 1 }));
+      if (processEmissions || transportEmissions) {
+        newAnswers.Total_emissions_kgCO2 = processEmissions + transportEmissions;
       }
-    } else {
-      submitQuiz();
     }
+
+    setQuizState(prev => ({ ...prev, answers: newAnswers }));
+    setChatMessages(prev => [...prev, { role: 'user', content: String(value) }]);
+    
+    // Move to next question
+    const nextQuestion = quizState.currentQuestion + 1;
+    setQuizState(prev => ({ ...prev, currentQuestion: nextQuestion }));
+    
+    setTimeout(() => {
+      askNextQuestion(nextQuestion);
+    }, 500);
   };
 
-  const prevQuestion = () => {
-    if (quizState.currentQuestion > 0) {
-      setQuizState(prev => ({ ...prev, currentQuestion: prev.currentQuestion - 1 }));
-    }
-  };
-
-  const skipQuestion = () => {
+  const handleSkip = () => {
     const currentQ = quizQuestions[quizState.currentQuestion];
-    if (currentQ && currentQ.type === 'number') {
+    if (currentQ?.type === 'number') {
       handleAnswer(currentQ.id, 0);
+    } else {
+      setChatMessages(prev => [...prev, { role: 'user', content: 'Skipped' }]);
+      const nextQuestion = quizState.currentQuestion + 1;
+      setQuizState(prev => ({ ...prev, currentQuestion: nextQuestion }));
+      setTimeout(() => {
+        askNextQuestion(nextQuestion);
+      }, 500);
     }
-    nextQuestion();
   };
 
   const submitQuiz = async () => {
     setQuizState(prev => ({ ...prev, isSubmitting: true }));
+    setChatMessages(prev => [...prev, { role: 'assistant', content: '🔄 Analyzing your data...' }]);
     
     const payload: QuizPayload = {
       sample_row: {
@@ -116,15 +148,15 @@ const CircuBuddy = () => {
         Metal: quizState.answers.Metal || '',
         Energy_MJ_per_kg: quizState.answers.Energy_MJ_per_kg || 0,
         Quantity_kg: quizState.answers.Quantity_kg || 0,
-        Energy_MJ_total: quizState.answers.Energy_MJ_total || 0,
+        Energy_MJ_total: quizState.answers.Energy_MJ_total || null,
         Transport_km: quizState.answers.Transport_km || 0,
         Transport_Mode: quizState.answers.Transport_Mode || '',
-        Transport_emissions_kgCO2: quizState.answers.Transport_emissions_kgCO2 || 0,
+        Transport_emissions_kgCO2: quizState.answers.Transport_emissions_kgCO2 || null,
         Water_use_m3_per_ton: quizState.answers.Water_use_m3_per_ton || 0,
         End_of_Life: quizState.answers.End_of_Life || '',
         Circularity_option: quizState.answers.Circularity_option || '',
-        Process_emissions_kgCO2: quizState.answers.Process_emissions_kgCO2 || 0,
-        Total_emissions_kgCO2: quizState.answers.Total_emissions_kgCO2 || 0,
+        Process_emissions_kgCO2: quizState.answers.Process_emissions_kgCO2 || null,
+        Total_emissions_kgCO2: quizState.answers.Total_emissions_kgCO2 || null,
         Emission_factor_kgCO2_per_MJ: quizState.answers.Emission_factor_kgCO2_per_MJ || 0
       },
       question: quizState.userGoal || 'LCA analysis for metallurgy process'
@@ -140,12 +172,21 @@ const CircuBuddy = () => {
       const results = await response.json();
       setQuizState(prev => ({ ...prev, isSubmitting: false, results }));
       
+      const resultMessage = typeof results === 'string' ? results : JSON.stringify(results, null, 2);
+      setChatMessages(prev => [...prev, 
+        { role: 'assistant', content: '🎉 Analysis Complete!' },
+        { role: 'assistant', content: resultMessage }
+      ]);
+      
       toast({
         title: "Analysis Complete!",
         description: "Your LCA results are ready.",
       });
     } catch (error) {
       setQuizState(prev => ({ ...prev, isSubmitting: false }));
+      setChatMessages(prev => [...prev, 
+        { role: 'assistant', content: '❌ Network error. Would you like to retry or export your data?' }
+      ]);
       toast({
         title: "Connection Error",
         description: "Failed to submit. You can retry or export your data.",
@@ -156,72 +197,166 @@ const CircuBuddy = () => {
 
   const resetQuiz = () => {
     setQuizState({ currentQuestion: 0, answers: {}, isSubmitting: false, results: null, userGoal: '' });
-    setMode('welcome');
+    setChatMessages([]);
+    setTimeout(() => {
+      const introMessage: ChatMessage = {
+        role: 'assistant',
+        content: "Let's start a new LCA analysis! 🌱"
+      };
+      setChatMessages([introMessage]);
+      setTimeout(() => {
+        askNextQuestion(0);
+      }, 1000);
+    }, 500);
   };
 
-  // Welcome Screen
-  if (mode === 'welcome') {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="w-full max-w-2xl bhoomi-card">
-          <CardHeader className="text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-primary rounded-full flex items-center justify-center">
-              <MessageCircle className="w-8 h-8 text-primary-foreground" />
-            </div>
-            <CardTitle className="text-3xl bhoomi-text-gradient">Hi, I'm CircuBuddy! 🌱</CardTitle>
-            <CardDescription className="text-lg mt-4">
-              I help you run Life Cycle Assessments and explore circularity improvements. I can either guide you through a 2-minute quiz or chat freely about LCA. What would you like to do?
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center space-y-6">
-            <div className="space-y-3">
-              <Button onClick={startQuiz} className="w-full bhoomi-btn-glow" size="lg">
-                Start LCA Quiz
-              </Button>
-              <Button onClick={startChat} variant="outline" className="w-full" size="lg">
-                Chat with me
-              </Button>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Quiz: 15 questions • ~2 minutes • Instant analysis
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  const exportData = () => {
+    const dataStr = JSON.stringify(quizState.answers, null, 2);
+    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'lca-quiz-answers.json';
+    link.click();
+  };
 
-  // Chat Mode
-  if (mode === 'chat') {
-    return (
-      <div className="min-h-screen bg-background p-4">
-        <div className="max-w-2xl mx-auto">
-          <Card className="bhoomi-card mb-4">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <MessageCircle className="w-5 h-5" />
-                Chat with CircuBuddy
-              </CardTitle>
-              <Button onClick={() => setMode('quiz')} variant="outline" size="sm">
-                Switch to Quiz
-              </Button>
-            </CardHeader>
-          </Card>
-          
-          <div className="space-y-4 mb-4 max-h-96 overflow-y-auto">
-            {chatMessages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                  msg.role === 'user' 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'bg-muted text-foreground'
-                }`}>
-                  {msg.content}
-                </div>
+  const handleChatSend = () => {
+    if (!chatInput.trim()) return;
+    
+    // Handle free-form chat if not in question mode
+    if (!isQuestionMode) {
+      const userMessage = chatInput.trim();
+      setChatMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+      setChatInput('');
+      
+      setTimeout(() => {
+        let response = "That's a great question! ";
+        if (userMessage.toLowerCase().includes('emission')) {
+          response += "To reduce emissions, consider: switching to renewable energy, optimizing transport routes, or exploring circular economy options.";
+        } else if (userMessage.toLowerCase().includes('circular')) {
+          response += "Circularity means keeping materials in use longer through recycling, refurbishing, or remanufacturing.";
+        } else {
+          response += "I can help you explore this through our LCA analysis.";
+        }
+        
+        setChatMessages(prev => [...prev, { role: 'assistant', content: response }]);
+      }, 1000);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background p-4">
+      <div className="max-w-2xl mx-auto">
+        <Card className="bhoomi-card mb-4">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 bhoomi-text-gradient">
+              <MessageCircle className="w-5 h-5" />
+              CircuBuddy LCA Assistant
+            </CardTitle>
+          </CardHeader>
+        </Card>
+        
+        <div className="space-y-4 mb-4 max-h-96 overflow-y-auto">
+          {chatMessages.map((msg, idx) => (
+            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
+                msg.role === 'user' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'bg-muted text-foreground'
+              }`}>
+                <div className="whitespace-pre-wrap">{msg.content}</div>
+                
+                {/* Show options for select questions */}
+                {msg.role === 'assistant' && msg.options && (
+                  <div className="mt-3 space-y-2">
+                    {msg.options.map((option) => (
+                      <Button
+                        key={option}
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-start text-left"
+                        onClick={() => msg.questionId && handleAnswer(msg.questionId, option)}
+                      >
+                        {option}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Show input for number questions */}
+                {msg.role === 'assistant' && msg.questionType === 'number' && !msg.options && msg.questionId !== 'userGoal' && (
+                  <div className="mt-3 space-y-2">
+                    <Input
+                      type="number"
+                      placeholder="Enter value"
+                      className="text-sm"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          const value = (e.target as HTMLInputElement).value;
+                          if (msg.questionId) handleAnswer(msg.questionId, value);
+                        }
+                      }}
+                    />
+                    {msg.unit && <p className="text-xs text-muted-foreground">Unit: {msg.unit}</p>}
+                  </div>
+                )}
+                
+                {/* Show textarea for goal question */}
+                {msg.role === 'assistant' && msg.questionId === 'userGoal' && (
+                  <div className="mt-3 space-y-2">
+                    <Textarea
+                      placeholder="e.g., Reduce CO2 emissions by 20%, explore circular economy options..."
+                      className="text-sm min-h-16"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          const value = (e.target as HTMLTextAreaElement).value;
+                          if (value.trim()) handleAnswer('userGoal', value);
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+                
+                {/* Show skip button for skippable questions */}
+                {msg.role === 'assistant' && msg.allowSkip && (
+                  <div className="mt-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleSkip}
+                      className="text-xs"
+                    >
+                      <SkipForward className="w-3 h-3 mr-1" />
+                      Skip
+                    </Button>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-          
+            </div>
+          ))}
+        </div>
+        
+        {/* Show action buttons after results */}
+        {quizState.results && (
+          <Card className="bhoomi-card">
+            <CardContent className="pt-4">
+              <div className="flex flex-wrap gap-3 justify-center">
+                <Button onClick={exportData} variant="outline" size="sm">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Data
+                </Button>
+                <Button onClick={resetQuiz} variant="secondary" size="sm">
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  New Analysis
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Free-form chat input (only show if not in active question flow) */}
+        {!isQuestionMode && (
           <Card className="bhoomi-card">
             <CardContent className="pt-4">
               <div className="flex gap-2">
@@ -238,187 +373,10 @@ const CircuBuddy = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+        )}
       </div>
-    );
-  }
-
-  // Results Screen  
-  if (quizState.results) {
-    return (
-      <div className="min-h-screen bg-background p-4">
-        <div className="max-w-4xl mx-auto">
-          <Card className="bhoomi-card">
-            <CardHeader>
-              <CardTitle className="text-2xl bhoomi-text-gradient">🎉 LCA Analysis Complete!</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="p-4 bg-primary/10 rounded-lg">
-                <pre className="text-sm whitespace-pre-wrap text-foreground">
-                  {typeof quizState.results === 'string' ? quizState.results : JSON.stringify(quizState.results, null, 2)}
-                </pre>
-              </div>
-              
-              <div className="flex flex-wrap gap-3 justify-center">
-                <Button onClick={() => {const dataStr = JSON.stringify(quizState.answers, null, 2); const dataBlob = new Blob([dataStr], {type: 'application/json'}); const url = URL.createObjectURL(dataBlob); const link = document.createElement('a'); link.href = url; link.download = 'lca-quiz-answers.json'; link.click();}} variant="outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export Data
-                </Button>
-                <Button onClick={resetQuiz} variant="secondary">
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  New Analysis
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  // Quiz Mode
-  if (mode === 'quiz') {
-    const totalQuestions = quizQuestions.length + 1;
-    const isGoalQuestion = quizState.currentQuestion === quizQuestions.length;
-    const progress = ((quizState.currentQuestion + 1) / totalQuestions) * 100;
-
-    // Goal Question (15th question)
-    if (isGoalQuestion) {
-      return (
-        <div className="min-h-screen bg-background p-4">
-          <div className="max-w-2xl mx-auto">
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">Question 15 of 15</span>
-                <span className="text-sm font-medium text-primary">{Math.round(progress)}% Complete</span>
-              </div>
-              <Progress value={progress} className="h-2" />
-            </div>
-
-            <Card className="bhoomi-card">
-              <CardHeader>
-                <CardTitle className="text-xl">What is your goal for this LCA run?</CardTitle>
-              </CardHeader>
-              
-              <CardContent className="space-y-6">
-                <Textarea
-                  placeholder="e.g., Reduce CO2 emissions by 20%, explore circular economy options..."
-                  value={quizState.userGoal}
-                  onChange={(e) => setQuizState(prev => ({ ...prev, userGoal: e.target.value }))}
-                  className="bhoomi-input min-h-20"
-                />
-
-                <div className="flex justify-between items-center pt-4">
-                  <Button onClick={() => setQuizState(prev => ({ ...prev, currentQuestion: prev.currentQuestion - 1 }))} variant="outline" size="sm">
-                    <ArrowLeft className="w-4 h-4 mr-1" />
-                    Back
-                  </Button>
-                  
-                  <Button onClick={nextQuestion} className="bhoomi-btn-glow" disabled={!quizState.userGoal.trim()}>
-                    Get Analysis
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {quizState.isSubmitting && (
-              <div className="text-center mt-4">
-                <p className="text-primary animate-pulse">🔄 Analyzing your data...</p>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    // Regular Quiz Questions
-    const currentQ = quizQuestions[quizState.currentQuestion];
-    const currentAnswer = quizState.answers[currentQ.id];
-
-    return (
-      <div className="min-h-screen bg-background p-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">
-                Question {quizState.currentQuestion + 1} of {totalQuestions}
-              </span>
-              <span className="text-sm font-medium text-primary">
-                {Math.round(progress)}% Complete
-              </span>
-            </div>
-            <Progress value={progress} className="h-2" />
-          </div>
-
-          <Card className="bhoomi-card">
-            <CardHeader>
-              <CardTitle className="text-xl">{currentQ.title}</CardTitle>
-              {currentQ.helper && (
-                <CardDescription className="text-sm bg-accent/10 p-3 rounded-lg">
-                  💡 {currentQ.helper}
-                </CardDescription>
-              )}
-            </CardHeader>
-            
-            <CardContent className="space-y-6">
-              {currentQ.type === 'select' ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {currentQ.options?.map((option) => (
-                    <Button
-                      key={option}
-                      variant={currentAnswer === option ? "default" : "outline"}
-                      className={`h-auto p-4 text-left justify-start ${
-                        currentAnswer === option ? 'bhoomi-btn-glow' : ''
-                      }`}
-                      onClick={() => handleAnswer(currentQ.id, option)}
-                    >
-                      {option}
-                    </Button>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <Input
-                    type="number"
-                    placeholder={currentQ.placeholder}
-                    value={currentAnswer || ''}
-                    onChange={(e) => handleAnswer(currentQ.id, e.target.value)}
-                    className="bhoomi-input text-lg"
-                  />
-                  {currentQ.unit && (
-                    <p className="text-sm text-muted-foreground">Unit: {currentQ.unit}</p>
-                  )}
-                </div>
-              )}
-
-              <div className="flex justify-between items-center pt-4">
-                <div className="flex gap-2">
-                  {quizState.currentQuestion > 0 && (
-                    <Button onClick={prevQuestion} variant="outline" size="sm">
-                      <ArrowLeft className="w-4 h-4 mr-1" />
-                      Back
-                    </Button>
-                  )}
-                  <Button onClick={skipQuestion} variant="ghost" size="sm">
-                    <SkipForward className="w-4 h-4 mr-1" />
-                    Skip
-                  </Button>
-                </div>
-                
-                <Button onClick={nextQuestion} className="bhoomi-btn-glow" disabled={currentQ.required && !currentAnswer}>
-                  Next
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  return null;
+    </div>
+  );
 };
 
 export default CircuBuddy;
