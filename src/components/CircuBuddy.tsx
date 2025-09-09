@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
-import { RotateCcw, Download, MessageCircle, Send, SkipForward } from 'lucide-react';
+import { RotateCcw, Download, MessageCircle, Send, SkipForward, ArrowDown } from 'lucide-react';
 import { quizQuestions } from '@/data/quizQuestions';
 import { QuizState, QuizData, QuizPayload } from '@/types/quiz';
 import { useToast } from '@/hooks/use-toast';
@@ -17,11 +17,16 @@ interface ChatMessage {
   questionType?: 'select' | 'number';
   unit?: string;
   allowSkip?: boolean;
+  disabled?: boolean;
 }
 
 const CircuBuddy = () => {
   const { toast } = useToast();
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<{[key: number]: string}>({});
+  const [disabledQuestions, setDisabledQuestions] = useState<Set<number>>(new Set());
+  const [showScrollBottom, setShowScrollBottom] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const [chatInput, setChatInput] = useState('');
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
@@ -45,6 +50,30 @@ const CircuBuddy = () => {
     setTimeout(() => {
       askNextQuestion(0);
     }, 1000);
+  }, []);
+
+  // Auto-scroll to bottom when new messages are added
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+
+  // Handle scroll detection for scroll-to-bottom button
+  useEffect(() => {
+    const handleScroll = () => {
+      if (chatContainerRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+        const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
+        setShowScrollBottom(!isNearBottom);
+      }
+    };
+
+    const container = chatContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
   }, []);
 
   const askNextQuestion = (questionIndex: number) => {
@@ -79,10 +108,13 @@ const CircuBuddy = () => {
     setChatMessages(prev => [...prev, questionMessage]);
   };
 
-  const handleAnswer = (questionId: keyof QuizData | string, value: string | number) => {
+  const handleAnswer = (questionId: keyof QuizData | string, value: string | number, messageIndex?: number) => {
     if (questionId === 'userGoal') {
       setQuizState(prev => ({ ...prev, userGoal: value as string }));
       setChatMessages(prev => [...prev, { role: 'user', content: value as string }]);
+      if (messageIndex !== undefined) {
+        setDisabledQuestions(prev => new Set([...prev, messageIndex]));
+      }
       submitQuiz();
       return;
     }
@@ -115,6 +147,11 @@ const CircuBuddy = () => {
     setQuizState(prev => ({ ...prev, answers: newAnswers }));
     setChatMessages(prev => [...prev, { role: 'user', content: String(value) }]);
     
+    // Disable the question
+    if (messageIndex !== undefined) {
+      setDisabledQuestions(prev => new Set([...prev, messageIndex]));
+    }
+    
     // Move to next question
     const nextQuestion = quizState.currentQuestion + 1;
     setQuizState(prev => ({ ...prev, currentQuestion: nextQuestion }));
@@ -124,12 +161,37 @@ const CircuBuddy = () => {
     }, 500);
   };
 
-  const handleSkip = () => {
+  const handleOptionSelect = (messageIndex: number, option: string) => {
+    setSelectedOptions(prev => ({ ...prev, [messageIndex]: option }));
+  };
+
+  const handleOptionNext = (messageIndex: number, questionId: keyof QuizData | string) => {
+    const selectedOption = selectedOptions[messageIndex];
+    if (selectedOption && questionId) {
+      handleAnswer(questionId, selectedOption, messageIndex);
+      setSelectedOptions(prev => {
+        const newSelected = { ...prev };
+        delete newSelected[messageIndex];
+        return newSelected;
+      });
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
+  const handleSkip = (messageIndex?: number) => {
     const currentQ = quizQuestions[quizState.currentQuestion];
     if (currentQ?.type === 'number') {
-      handleAnswer(currentQ.id, 0);
+      handleAnswer(currentQ.id, 0, messageIndex);
     } else {
       setChatMessages(prev => [...prev, { role: 'user', content: 'Skipped' }]);
+      if (messageIndex !== undefined) {
+        setDisabledQuestions(prev => new Set([...prev, messageIndex]));
+      }
       const nextQuestion = quizState.currentQuestion + 1;
       setQuizState(prev => ({ ...prev, currentQuestion: nextQuestion }));
       setTimeout(() => {
@@ -198,6 +260,8 @@ const CircuBuddy = () => {
   const resetQuiz = () => {
     setQuizState({ currentQuestion: 0, answers: {}, isSubmitting: false, results: null, userGoal: '' });
     setChatMessages([]);
+    setSelectedOptions({});
+    setDisabledQuestions(new Set());
     setTimeout(() => {
       const introMessage: ChatMessage = {
         role: 'assistant',
@@ -256,98 +320,136 @@ const CircuBuddy = () => {
           </CardHeader>
         </Card>
         
-        <div className="space-y-4 mb-4 max-h-96 overflow-y-auto">
-          {chatMessages.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
-                msg.role === 'user' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-muted text-foreground'
-              }`}>
-                <div className="whitespace-pre-wrap">{msg.content}</div>
-                
-                {/* Show options for select questions */}
-                {msg.role === 'assistant' && msg.options && (
-                  <div className="mt-3 space-y-2">
-                    {msg.options.map((option) => (
-                      <Button
-                        key={option}
-                        variant="outline"
-                        size="sm"
-                        className="w-full justify-start text-left"
-                        onClick={() => msg.questionId && handleAnswer(msg.questionId, option)}
-                      >
-                        {option}
-                      </Button>
-                    ))}
-                  </div>
-                )}
-                
-                {/* Show input for number questions */}
-                {msg.role === 'assistant' && msg.questionType === 'number' && !msg.options && msg.questionId !== 'userGoal' && (
-                  <div className="mt-3 space-y-2">
-                    <div className="flex gap-2">
-                      <Input
-                        type="number"
-                        placeholder="Enter value"
-                        className="text-sm flex-1"
-                        id={`input-${idx}`}
+        <div 
+          ref={chatContainerRef}
+          className="space-y-4 mb-4 max-h-96 overflow-y-auto relative"
+        >
+          {chatMessages.map((msg, idx) => {
+            const isDisabled = disabledQuestions.has(idx);
+            return (
+              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
+                  msg.role === 'user' 
+                    ? 'bg-primary text-primary-foreground' 
+                    : 'bg-muted text-foreground'
+                } ${isDisabled ? 'opacity-50' : ''}`}>
+                  <div className="whitespace-pre-wrap">{msg.content}</div>
+                  
+                  {/* Show options for select questions */}
+                  {msg.role === 'assistant' && msg.options && !isDisabled && (
+                    <div className="mt-3 space-y-2">
+                      {msg.options.map((option) => (
+                        <Button
+                          key={option}
+                          variant={selectedOptions[idx] === option ? "default" : "outline"}
+                          size="sm"
+                          className="w-full justify-start text-left"
+                          onClick={() => handleOptionSelect(idx, option)}
+                        >
+                          {option}
+                        </Button>
+                      ))}
+                      {selectedOptions[idx] && (
+                        <Button
+                          size="sm"
+                          onClick={() => msg.questionId && handleOptionNext(idx, msg.questionId)}
+                          className="w-full mt-2"
+                        >
+                          Next
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Show input for number questions */}
+                  {msg.role === 'assistant' && msg.questionType === 'number' && !msg.options && msg.questionId !== 'userGoal' && !isDisabled && (
+                    <div className="mt-3 space-y-2">
+                      <div className="flex gap-2">
+                        <Input
+                          type="number"
+                          placeholder="Enter value"
+                          className="text-sm flex-1"
+                          id={`input-${idx}`}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              const value = (e.target as HTMLInputElement).value;
+                              if (msg.questionId) handleAnswer(msg.questionId, value, idx);
+                            }
+                          }}
+                        />
+                        <Button
+                          size="sm"
+                          onClick={() => {
+                            const input = document.getElementById(`input-${idx}`) as HTMLInputElement;
+                            const value = input?.value || '';
+                            if (msg.questionId) handleAnswer(msg.questionId, value, idx);
+                          }}
+                        >
+                          Next
+                        </Button>
+                      </div>
+                      {msg.unit && <p className="text-xs text-muted-foreground">Unit: {msg.unit}</p>}
+                    </div>
+                  )}
+                  
+                  {/* Show textarea for goal question */}
+                  {msg.role === 'assistant' && msg.questionId === 'userGoal' && !isDisabled && (
+                    <div className="mt-3 space-y-2">
+                      <Textarea
+                        placeholder="e.g., Reduce CO2 emissions by 20%, explore circular economy options..."
+                        className="text-sm min-h-16"
+                        id={`textarea-${idx}`}
                         onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            const value = (e.target as HTMLInputElement).value;
-                            if (msg.questionId) handleAnswer(msg.questionId, value);
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            const value = (e.target as HTMLTextAreaElement).value;
+                            if (value.trim()) handleAnswer('userGoal', value, idx);
                           }
                         }}
                       />
                       <Button
                         size="sm"
                         onClick={() => {
-                          const input = document.getElementById(`input-${idx}`) as HTMLInputElement;
-                          const value = input?.value || '';
-                          if (msg.questionId) handleAnswer(msg.questionId, value);
+                          const textarea = document.getElementById(`textarea-${idx}`) as HTMLTextAreaElement;
+                          const value = textarea?.value || '';
+                          if (value.trim()) handleAnswer('userGoal', value, idx);
                         }}
+                        className="w-full"
                       >
-                        Next
+                        Submit Goal
                       </Button>
                     </div>
-                    {msg.unit && <p className="text-xs text-muted-foreground">Unit: {msg.unit}</p>}
-                  </div>
-                )}
-                
-                {/* Show textarea for goal question */}
-                {msg.role === 'assistant' && msg.questionId === 'userGoal' && (
-                  <div className="mt-3 space-y-2">
-                    <Textarea
-                      placeholder="e.g., Reduce CO2 emissions by 20%, explore circular economy options..."
-                      className="text-sm min-h-16"
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          const value = (e.target as HTMLTextAreaElement).value;
-                          if (value.trim()) handleAnswer('userGoal', value);
-                        }
-                      }}
-                    />
-                  </div>
-                )}
-                
-                {/* Show skip button for skippable questions */}
-                {msg.role === 'assistant' && msg.allowSkip && (
-                  <div className="mt-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleSkip}
-                      className="text-xs"
-                    >
-                      <SkipForward className="w-3 h-3 mr-1" />
-                      Skip
-                    </Button>
-                  </div>
-                )}
+                  )}
+                  
+                  {/* Show skip button for skippable questions */}
+                  {msg.role === 'assistant' && msg.allowSkip && !isDisabled && (
+                    <div className="mt-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleSkip(idx)}
+                        className="text-xs"
+                      >
+                        <SkipForward className="w-3 h-3 mr-1" />
+                        Skip
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+          
+          {/* Scroll to bottom button */}
+          {showScrollBottom && (
+            <Button
+              className="fixed bottom-20 right-4 rounded-full p-2 shadow-lg z-10"
+              size="sm"
+              onClick={scrollToBottom}
+            >
+              <ArrowDown className="w-4 h-4" />
+            </Button>
+          )}
         </div>
         
         {/* Show action buttons after results */}
