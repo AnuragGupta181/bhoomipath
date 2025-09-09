@@ -286,17 +286,30 @@ const CircuBuddy = () => {
                 {/* Show input for number questions */}
                 {msg.role === 'assistant' && msg.questionType === 'number' && !msg.options && msg.questionId !== 'userGoal' && (
                   <div className="mt-3 space-y-2">
-                    <Input
-                      type="number"
-                      placeholder="Enter value"
-                      className="text-sm"
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                          const value = (e.target as HTMLInputElement).value;
+                    <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        placeholder="Enter value"
+                        className="text-sm flex-1"
+                        id={`input-${idx}`}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            const value = (e.target as HTMLInputElement).value;
+                            if (msg.questionId) handleAnswer(msg.questionId, value);
+                          }
+                        }}
+                      />
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          const input = document.getElementById(`input-${idx}`) as HTMLInputElement;
+                          const value = input?.value || '';
                           if (msg.questionId) handleAnswer(msg.questionId, value);
-                        }
-                      }}
-                    />
+                        }}
+                      >
+                        Next
+                      </Button>
+                    </div>
                     {msg.unit && <p className="text-xs text-muted-foreground">Unit: {msg.unit}</p>}
                   </div>
                 )}
