@@ -8,110 +8,66 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Earthster Brand Colors */
-    --background: 210 20% 8%;
-    --foreground: 0 0% 100%;
+    /* BhoomiPath Light Theme Colors */
+    --background: 49 100% 85%;  /* vanilla */
+    --foreground: 31 89% 28%;   /* chocolate */
 
-    --card: 210 20% 10%;
-    --card-foreground: 0 0% 100%;
+    --card: 49 80% 92%;         /* lighter vanilla */
+    --card-foreground: 31 89% 28%; /* chocolate */
 
-    --popover: 210 20% 10%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 49 80% 92%;      /* lighter vanilla */
+    --popover-foreground: 31 89% 28%; /* chocolate */
 
-    --primary: 176 100% 42%;
-    --primary-foreground: 210 20% 8%;
+    --primary: 87 92% 28%;      /* avocado */
+    --primary-foreground: 49 100% 85%; /* vanilla */
 
-    --secondary: 210 15% 15%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 32 93% 68%;    /* earth_yellow */
+    --secondary-foreground: 31 89% 28%; /* chocolate */
 
-    --muted: 210 15% 20%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 49 60% 75%;        /* muted vanilla */
+    --muted-foreground: 31 60% 40%; /* muted chocolate */
 
-    --accent: 176 100% 42%;
-    --accent-foreground: 210 20% 8%;
+    --accent: 74 87% 44%;       /* yellow_green */
+    --accent-foreground: 31 89% 28%; /* chocolate */
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 49 100% 85%;
 
-    --border: 210 15% 25%;
-    --input: 210 15% 25%;
-    --ring: 176 100% 42%;
+    --border: 49 40% 70%;       /* vanilla border */
+    --input: 49 60% 80%;        /* vanilla input */
+    --ring: 87 92% 28%;         /* avocado */
 
     --radius: 0.5rem;
     
-    /* Earthster Design Tokens */
-    --earthster-cyan: 176 100% 42%;
-    --earthster-dark: 210 20% 8%;
-    --earthster-darker: 210 25% 6%;
-    --earthster-card: 210 20% 10%;
-    --earthster-border: 210 15% 25%;
+    /* BhoomiPath Earth-tone Design Tokens */
+    --bhoomi-avocado: 87 92% 28%;     /* primary accent */
+    --bhoomi-vanilla: 49 100% 85%;    /* background */
+    --bhoomi-vanilla-light: 49 80% 92%; /* card background */
+    --bhoomi-earth-yellow: 32 93% 68%; /* secondary accent */
+    --bhoomi-yellow-green: 74 87% 44%; /* interactive */
+    --bhoomi-chocolate: 31 89% 28%;    /* text */
     
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--earthster-cyan)), hsl(var(--earthster-cyan) / 0.8));
-    --gradient-hero: linear-gradient(180deg, hsl(var(--earthster-darker)), hsl(var(--earthster-dark)));
-    --gradient-card: linear-gradient(145deg, hsl(var(--earthster-card)), hsl(var(--earthster-dark)));
+    /* Light Theme Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--bhoomi-avocado)), hsl(var(--bhoomi-earth-yellow)));
+    --gradient-hero: linear-gradient(180deg, hsl(var(--bhoomi-vanilla)), hsl(var(--bhoomi-vanilla-light)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--bhoomi-vanilla-light)), hsl(var(--bhoomi-vanilla)));
     
-    /* Shadows */
-    --shadow-glow: 0 0 30px hsl(var(--earthster-cyan) / 0.3);
-    --shadow-card: 0 10px 30px -10px hsl(var(--earthster-darker) / 0.5);
+    /* Light Theme Shadows */
+    --shadow-glow: 0 0 30px hsl(var(--bhoomi-avocado) / 0.2);
+    --shadow-card: 0 10px 30px -10px hsl(var(--bhoomi-chocolate) / 0.1);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 49 80% 92%;  /* light vanilla */
+    --sidebar-foreground: 31 89% 28%;  /* chocolate */
+    --sidebar-primary: 87 92% 28%;     /* avocado */
+    --sidebar-primary-foreground: 49 100% 85%; /* vanilla */
+    --sidebar-accent: 32 93% 68%;      /* earth_yellow */
+    --sidebar-accent-foreground: 31 89% 28%; /* chocolate */
+    --sidebar-border: 49 40% 70%;      /* vanilla border */
+    --sidebar-ring: 87 92% 28%;        /* avocado */
   }
 }
 
@@ -144,49 +100,59 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Earthster component styles */
-  .earthster-glow {
+  /* BhoomiPath component styles */
+  .bhoomi-glow {
     box-shadow: var(--shadow-glow);
   }
   
-  .earthster-card {
+  .bhoomi-card {
     background: var(--gradient-card);
     box-shadow: var(--shadow-card);
   }
   
-  .earthster-hero-bg {
+  .bhoomi-hero-bg {
     background: var(--gradient-hero);
   }
   
-  .earthster-text-gradient {
+  .bhoomi-text-gradient {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
-  .earthster-network-node {
+  .bhoomi-network-node {
     @apply relative rounded-full bg-primary transition-all duration-300 hover:scale-110;
     box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
   }
   
-  .earthster-network-line {
+  .bhoomi-network-line {
     @apply absolute opacity-30;
     background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent);
   }
   
-  .earthster-btn-glow {
+  .bhoomi-btn-glow {
     @apply relative overflow-hidden transition-all duration-300;
     background: hsl(var(--primary));
     box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
   }
   
-  .earthster-btn-glow:hover {
+  .bhoomi-btn-glow:hover {
     box-shadow: 0 0 30px hsl(var(--primary) / 0.5);
     transform: translateY(-1px);
   }
   
-  .earthster-input {
+  .bhoomi-input {
     @apply w-full px-4 py-3 rounded-xl border border-input bg-card/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200;
   }
+  
+  /* Backward compatibility - keep earthster classes for now */
+  .earthster-glow { @apply bhoomi-glow; }
+  .earthster-card { @apply bhoomi-card; }
+  .earthster-hero-bg { @apply bhoomi-hero-bg; }
+  .earthster-text-gradient { @apply bhoomi-text-gradient; }
+  .earthster-network-node { @apply bhoomi-network-node; }
+  .earthster-network-line { @apply bhoomi-network-line; }
+  .earthster-btn-glow { @apply bhoomi-btn-glow; }
+  .earthster-input { @apply bhoomi-input; }
 }
