@@ -32,7 +32,15 @@ const Hero = () => {
               className="earthster-btn-glow text-lg px-8 py-6 rounded-full"
               asChild
             >
-              <a href="/signin">GET STARTED</a>
+              <a href="/circubuddy">Try CircuBuddy Quiz 🌍</a>
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="text-lg px-8 py-6 rounded-full border-primary/50 hover:bg-primary/10"
+              asChild
+            >
+              <a href="/signin">Get Full Platform</a>
             </Button>
           </div>
         </div>

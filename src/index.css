@@ -56,9 +56,30 @@ All colors MUST be HSL.
     --shadow-glow: 0 0 30px hsl(var(--bhoomi-avocado) / 0.2);
     --shadow-card: 0 10px 30px -10px hsl(var(--bhoomi-chocolate) / 0.1);
     
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Animations */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Animation Definitions */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
 
     --sidebar-background: 49 80% 92%;  /* light vanilla */
     --sidebar-foreground: 31 89% 28%;  /* chocolate */
@@ -144,6 +165,15 @@ All colors MUST be HSL.
   
   .bhoomi-input {
     @apply w-full px-4 py-3 rounded-xl border border-input bg-card/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200;
+  }
+
+  /* Animation Classes */
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
   
   /* Backward compatibility - keep earthster classes for now */
