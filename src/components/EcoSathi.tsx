@@ -20,7 +20,7 @@ interface ChatMessage {
   disabled?: boolean;
 }
 
-const CircuBuddy = () => {
+const EcoSathi = () => {
   const { toast } = useToast();
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<{[key: number]: string}>({});
@@ -42,7 +42,7 @@ const CircuBuddy = () => {
   useEffect(() => {
     const welcomeMessage: ChatMessage = {
       role: 'assistant',
-      content: "Hi, I'm CircuBuddy! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Ready to get started?"
+      content: "Hi, I'm EcoSathi! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Ready to get started?"
     };
     
     setChatMessages([welcomeMessage]);
@@ -278,7 +278,7 @@ const CircuBuddy = () => {
     setTimeout(() => {
       const welcomeMessage: ChatMessage = {
         role: 'assistant',
-        content: "Hi, I'm CircuBuddy! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Ready to get started?"
+        content: "Hi, I'm EcoSathi! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Ready to get started?"
       };
       setChatMessages([welcomeMessage]);
     }, 500);
@@ -344,7 +344,7 @@ const CircuBuddy = () => {
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 bhoomi-text-gradient text-lg">
             <MessageCircle className="w-5 h-5" />
-            CircuBuddy LCA Assistant
+            EcoSathi LCA Assistant
           </CardTitle>
         </CardHeader>
       </Card>
@@ -546,4 +546,4 @@ const CircuBuddy = () => {
   );
 };
 
-export default CircuBuddy;
+export default EcoSathi;
