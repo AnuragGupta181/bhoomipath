@@ -32,11 +32,14 @@ const NetworkSection = () => {
           <div className="relative h-96 flex items-center justify-center">
             {/* Earth in center */}
             <div className="relative z-10">
-              <img 
-                src={earthHero} 
-                alt="Earth" 
-                className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover animate-pulse-glow"
-              />
+              <div className="relative">
+                <img 
+                  src={earthHero} 
+                  alt="Earth from space - environmental sustainability focus" 
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover animate-pulse-glow border-4 border-avocado/30 shadow-lg"
+                />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent via-transparent to-avocado/20"></div>
+              </div>
             </div>
 
             {/* Network Nodes */}
