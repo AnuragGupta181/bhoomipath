@@ -19,8 +19,8 @@ const ProductivitySection = () => {
                 FEATURES
               </p>
               <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-                BOOST YOUR PRODUCTIVITY{" "}
-                <span className="earthster-text-gradient">WITH EARTHSTER</span>
+                BOOST YOUR PRODUCTIVITY WITH{" "}
+                <span className="earthster-text-gradient">BHOOMIPATH</span>
               </h2>
             </div>
 
@@ -45,7 +45,7 @@ const ProductivitySection = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">← Back</span>
-                  <span className="text-primary font-semibold">earthster</span>
+                  <span className="text-primary font-semibold">BhoomiPath</span>
                 </div>
                 
                 <div className="space-y-3">

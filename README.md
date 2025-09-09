@@ -1,10 +1,10 @@
-# Earthster Clone - Life Cycle Assessment Platform
+# BhoomiPath Clone - Life Cycle Assessment Platform
 
-A pixel-perfect clone of the Earthster.org website built with React 18, TypeScript, and Tailwind CSS.
+A pixel-perfect clone of the BhoomiPath.org website built with React 18, TypeScript, and Tailwind CSS.
 
 ## Project Overview
 
-This project recreates the Earthster homepage and sign-in page as a frontend-only application, matching the original design, layout, and user experience exactly.
+This project recreates the BhoomiPath homepage and sign-in page as a frontend-only application, matching the original design, layout, and user experience exactly.
 
 ## Features
 
@@ -14,7 +14,7 @@ This project recreates the Earthster homepage and sign-in page as a frontend-onl
 - Progressive enhancement for larger screens
 
 ### 🎨 **Design System**
-- Custom Earthster brand colors and design tokens
+- Custom BhoomiPath brand colors and design tokens
 - Dark theme with cyan accent colors
 - Consistent typography and spacing
 - Smooth animations and transitions
@@ -62,15 +62,13 @@ The following assets were generated specifically for this project:
 
 ## Getting Started
 
-### Prerequisites
-- Node.js 18+ and npm
 
 ### Installation
 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd earthster-clone
+cd BhoomiPath-clone
 ```
 
 2. Install dependencies:
@@ -118,7 +116,7 @@ src/
 
 ## Design System
 
-The project implements Earthster's design language with:
+The project implements BhoomiPath's design language with:
 
 - **Primary Color**: `hsl(176, 100%, 42%)` (Cyan)
 - **Background**: `hsl(210, 20%, 8%)` (Dark blue-black)
@@ -158,4 +156,4 @@ This is a frontend-only implementation with:
 
 ## License
 
-This project is for demonstration purposes only. All Earthster branding and design elements are property of their respective owners.
+This project is for demonstration purposes only. All BhoomiPath branding and design elements are property of their respective owners.

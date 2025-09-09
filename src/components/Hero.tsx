@@ -32,7 +32,7 @@ const Hero = () => {
               className="earthster-btn-glow text-lg px-8 py-6 rounded-full"
               asChild
             >
-              <a href="/ecosathi">Try EcoSathi Quiz 🌍</a>
+              <a href="/ecosathi">EcoSathi 🤖</a>
             </Button>
             <Button 
               size="lg" 

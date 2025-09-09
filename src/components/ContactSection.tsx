@@ -49,7 +49,13 @@ const ContactSection = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form 
+            
+            action="mailto:anuraggupta11421@gmail.com"
+              method="POST"
+              encType="text/plain"
+              // onSubmit={handleSubmit} 
+              className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">

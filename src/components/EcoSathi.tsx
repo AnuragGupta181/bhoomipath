@@ -52,7 +52,7 @@ const EcoSathi = () => {
     setChatStarted(true);
     const startMessage: ChatMessage = {
       role: 'assistant',
-      content: "Great! Let's begin your LCA analysis. I'll ask you 15 questions to gather the necessary data."
+      content: "Great! Let's begin your LCA analysis."
     };
     
     setChatMessages(prev => [...prev, startMessage]);
@@ -217,20 +217,20 @@ const EcoSathi = () => {
     
     const payload: QuizPayload = {
       sample_row: {
-        Process_Type: quizState.answers.Process_Type || '',
-        Metal: quizState.answers.Metal || '',
-        Energy_MJ_per_kg: quizState.answers.Energy_MJ_per_kg || 0,
-        Quantity_kg: quizState.answers.Quantity_kg || 0,
+        Process_Type: quizState.answers.Process_Type || null,
+        Metal: quizState.answers.Metal || null,
+        Energy_MJ_per_kg: quizState.answers.Energy_MJ_per_kg || null,
+        Quantity_kg: quizState.answers.Quantity_kg || null,
         Energy_MJ_total: quizState.answers.Energy_MJ_total || null,
-        Transport_km: quizState.answers.Transport_km || 0,
-        Transport_Mode: quizState.answers.Transport_Mode || '',
+        Transport_km: quizState.answers.Transport_km || null,
+        Transport_Mode: quizState.answers.Transport_Mode || null,
         Transport_emissions_kgCO2: quizState.answers.Transport_emissions_kgCO2 || null,
-        Water_use_m3_per_ton: quizState.answers.Water_use_m3_per_ton || 0,
-        End_of_Life: quizState.answers.End_of_Life || '',
-        Circularity_option: quizState.answers.Circularity_option || '',
+        Water_use_m3_per_ton: quizState.answers.Water_use_m3_per_ton || null,
+        End_of_Life: quizState.answers.End_of_Life || null,
+        Circularity_option: quizState.answers.Circularity_option || null,
         Process_emissions_kgCO2: quizState.answers.Process_emissions_kgCO2 || null,
         Total_emissions_kgCO2: quizState.answers.Total_emissions_kgCO2 || null,
-        Emission_factor_kgCO2_per_MJ: quizState.answers.Emission_factor_kgCO2_per_MJ || 0
+        Emission_factor_kgCO2_per_MJ: quizState.answers.Emission_factor_kgCO2_per_MJ || null
       },
       question: quizState.userGoal || 'LCA analysis for metallurgy process'
     };
@@ -342,9 +342,9 @@ const EcoSathi = () => {
       {/* Header */}
       <Card className="bhoomi-card m-4 mb-0">
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 bhoomi-text-gradient text-lg">
+          <CardTitle className="flex items-center gap-2  bhoomi-text-gradient text-lg text-size-xl font-bold">
             <MessageCircle className="w-5 h-5" />
-            EcoSathi LCA Assistant
+            Eco Sathi Your Personal LCA Assistant
           </CardTitle>
         </CardHeader>
       </Card>

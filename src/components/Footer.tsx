@@ -25,22 +25,22 @@ const Footer = () => {
                 <a href="/" className="block text-foreground hover:text-primary transition-colors">
                   Home
                 </a>
-                <a href="/blog" className="block text-foreground hover:text-primary transition-colors">
+                <a href="#blog" className="block text-foreground hover:text-primary transition-colors">
                   Blog
                 </a>
-                <a href="/services" className="block text-foreground hover:text-primary transition-colors">
+                <a href="/ecosathi" className="block text-foreground hover:text-primary transition-colors">
                   Services
                 </a>
               </div>
               
               <div className="space-y-4">
-                <a href="/terms" className="block text-foreground hover:text-primary transition-colors">
+                <a href="#terms" className="block text-foreground hover:text-primary transition-colors">
                   Terms and conditions
                 </a>
-                <a href="/privacy" className="block text-foreground hover:text-primary transition-colors">
+                <a href="#privacy" className="block text-foreground hover:text-primary transition-colors">
                   Privacy policy
                 </a>
-                <a href="/contact" className="block text-foreground hover:text-primary transition-colors">
+                <a href="#contact" className="block text-foreground hover:text-primary transition-colors">
                   Contact
                 </a>
               </div>
@@ -63,7 +63,7 @@ const Footer = () => {
                 <Linkedin className="w-5 h-5 text-primary-foreground" />
               </a>
               <a 
-                href="#" 
+                href="mailto:anuraggupta11421@gmail.com" 
                 className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center hover:bg-primary/80 transition-colors"
                 aria-label="Email"
               >

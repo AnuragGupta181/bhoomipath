@@ -3,12 +3,12 @@ import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
-    question: "Can I automate LCAs with Earthster?",
-    answer: "Yes, Earthster allows you to automate many aspects of LCA calculations through our advanced parameter-based system and integration capabilities."
+    question: "Can I automate LCAs with BhoomiPath?",
+    answer: "Yes, BhoomiPath allows you to automate many aspects of LCA calculations through our advanced parameter-based system and integration capabilities."
   },
   {
     question: "What standards do you comply with?",
-    answer: "Earthster complies with ISO 14040/14044 standards and integrates with major LCA databases and methodologies used internationally."
+    answer: "BhoomiPath complies with ISO 14040/14044 standards and integrates with major LCA databases and methodologies used internationally."
   },
   {
     question: "What background data do you include?",
@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     question: "Do I need a separate Ecoinvent license?",
-    answer: "No, Earthster includes access to necessary background databases as part of our service, eliminating the need for separate licensing."
+    answer: "No, BhoomiPath includes access to necessary background databases as part of our service, eliminating the need for separate licensing."
   },
   {
     question: "Can you use other data?",
@@ -24,20 +24,12 @@ const faqs = [
   },
   {
     question: "Can I model logistics / product use / supply chains?",
-    answer: "Absolutely. Earthster supports comprehensive life cycle modeling including supply chain, logistics, product use phase, and end-of-life scenarios."
+    answer: "Absolutely. BhoomiPath supports comprehensive life cycle modeling including supply chain, logistics, product use phase, and end-of-life scenarios."
   },
   {
     question: "What impact categories do you include?",
     answer: "We include all major impact categories such as climate change, acidification, eutrophication, toxicity, land use, water use, and more."
   },
-  {
-    question: "Can I run scenarios and simulations in Earthster?",
-    answer: "Yes, our platform supports scenario analysis and Monte Carlo simulations to help you understand uncertainty and optimize your products."
-  },
-  {
-    question: "Do you have a trial version?",
-    answer: "Yes, we offer a free trial that allows you to explore Earthster's capabilities with your own data before committing to a subscription."
-  }
 ];
 
 const FAQ = () => {
