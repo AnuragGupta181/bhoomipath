@@ -8,10 +8,10 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <img 
           src={earthHero} 
-          alt="Earth from space showing environmental sustainability" 
-          className="w-full h-full object-cover opacity-60"
+          alt="Earth from space" 
+          className="w-full h-full object-cover opacity-30"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-vanilla/30 via-vanilla/70 to-vanilla"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10 text-center">
