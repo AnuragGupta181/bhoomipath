@@ -36,21 +36,32 @@ const CircuBuddy = () => {
     userGoal: ''
   });
   const [isQuestionMode, setIsQuestionMode] = useState(true);
+  const [chatStarted, setChatStarted] = useState(false);
 
-  // Initialize chat with intro and first question
+  // Initialize chat with welcome message only
   useEffect(() => {
-    const introMessage: ChatMessage = {
+    const welcomeMessage: ChatMessage = {
       role: 'assistant',
-      content: "Hi, I'm CircuBuddy! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Let's start!"
+      content: "Hi, I'm CircuBuddy! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Ready to get started?"
     };
     
-    setChatMessages([introMessage]);
+    setChatMessages([welcomeMessage]);
+  }, []);
+  
+  const startChat = () => {
+    setChatStarted(true);
+    const startMessage: ChatMessage = {
+      role: 'assistant',
+      content: "Great! Let's begin your LCA analysis. I'll ask you 15 questions to gather the necessary data."
+    };
+    
+    setChatMessages(prev => [...prev, startMessage]);
     
     // Start first question after brief delay
     setTimeout(() => {
       askNextQuestion(0);
     }, 1000);
-  }, []);
+  };
 
   // Auto-scroll to bottom when new messages are added
   useEffect(() => {
@@ -262,15 +273,14 @@ const CircuBuddy = () => {
     setChatMessages([]);
     setSelectedOptions({});
     setDisabledQuestions(new Set());
+    setChatStarted(false);
+    
     setTimeout(() => {
-      const introMessage: ChatMessage = {
+      const welcomeMessage: ChatMessage = {
         role: 'assistant',
-        content: "Let's start a new LCA analysis! 🌱"
+        content: "Hi, I'm CircuBuddy! 🌱 I'll help you run a Life Cycle Assessment through a quick 15-question chat. Ready to get started?"
       };
-      setChatMessages([introMessage]);
-      setTimeout(() => {
-        askNextQuestion(0);
-      }, 1000);
+      setChatMessages([welcomeMessage]);
     }, 500);
   };
 
@@ -378,7 +388,24 @@ const CircuBuddy = () => {
       </div>
       
       {/* Fixed Bottom Input Area - WhatsApp Style */}
-      {currentQuestion && (
+      {!chatStarted && (
+        <div className="border-t bg-background p-4">
+          <Card className="bhoomi-card">
+            <CardContent className="p-4 text-center">
+              <Button 
+                onClick={startChat}
+                size="lg"
+                className="w-full max-w-xs"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Start Chat
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+      
+      {chatStarted && currentQuestion && (
         <div className="border-t bg-background p-4">
           <Card className="bhoomi-card">
             <CardContent className="p-4">
