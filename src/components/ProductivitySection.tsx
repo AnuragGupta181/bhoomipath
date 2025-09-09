@@ -18,7 +18,7 @@ const ProductivitySection = () => {
               <p className="text-primary text-sm font-semibold tracking-wider uppercase">
                 FEATURES
               </p>
-              <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+              <h2 className="text-3xl md:text-5xl font-bold leading-tight heading-wonderbar">
                 BOOST YOUR PRODUCTIVITY{" "}
                 <span className="earthster-text-gradient">WITH EARTHSTER</span>
               </h2>
