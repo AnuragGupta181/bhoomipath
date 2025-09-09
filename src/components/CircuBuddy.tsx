@@ -308,152 +308,197 @@ const CircuBuddy = () => {
     }
   };
 
+  const getCurrentQuestion = () => {
+    return chatMessages.find((msg, idx) => 
+      msg.role === 'assistant' && 
+      (msg.options || msg.questionType === 'number' || msg.questionId === 'userGoal') && 
+      !disabledQuestions.has(idx)
+    );
+  };
+
+  const getCurrentQuestionIndex = () => {
+    return chatMessages.findIndex((msg, idx) => 
+      msg.role === 'assistant' && 
+      (msg.options || msg.questionType === 'number' || msg.questionId === 'userGoal') && 
+      !disabledQuestions.has(idx)
+    );
+  };
+
+  const currentQuestion = getCurrentQuestion();
+  const currentQuestionIndex = getCurrentQuestionIndex();
+
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-2xl mx-auto">
-        <Card className="bhoomi-card mb-4">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 bhoomi-text-gradient">
-              <MessageCircle className="w-5 h-5" />
-              CircuBuddy LCA Assistant
-            </CardTitle>
-          </CardHeader>
-        </Card>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <Card className="bhoomi-card m-4 mb-0">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 bhoomi-text-gradient text-lg">
+            <MessageCircle className="w-5 h-5" />
+            CircuBuddy LCA Assistant
+          </CardTitle>
+        </CardHeader>
+      </Card>
+      
+      {/* Chat Messages - Scrollable Area */}
+      <div 
+        ref={chatContainerRef}
+        className="flex-1 overflow-y-auto p-4 pb-2 space-y-4"
+      >
+        {chatMessages.map((msg, idx) => {
+          const isDisabled = disabledQuestions.has(idx);
+          
+          return (
+            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
+                msg.role === 'user' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'bg-muted text-foreground'
+              } ${isDisabled ? 'opacity-70' : ''}`}>
+                <div className="whitespace-pre-wrap">{msg.content}</div>
+                
+                {/* Show unit hint for current number questions */}
+                {msg.role === 'assistant' && msg.questionType === 'number' && msg.unit && idx === currentQuestionIndex && (
+                  <p className="text-xs text-muted-foreground mt-2">Unit: {msg.unit}</p>
+                )}
+              </div>
+            </div>
+          );
+        })}
         
-        <div 
-          ref={chatContainerRef}
-          className="space-y-4 mb-4 max-h-96 overflow-y-auto relative"
-        >
-          {chatMessages.map((msg, idx) => {
-            const isDisabled = disabledQuestions.has(idx);
-            return (
-              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
-                  msg.role === 'user' 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'bg-muted text-foreground'
-                } ${isDisabled ? 'opacity-50' : ''}`}>
-                  <div className="whitespace-pre-wrap">{msg.content}</div>
-                  
-                  {/* Show options for select questions */}
-                  {msg.role === 'assistant' && msg.options && !isDisabled && (
-                    <div className="mt-3 space-y-2">
-                      {msg.options.map((option) => (
+        {/* Scroll to bottom button */}
+        {showScrollBottom && (
+          <Button
+            className="fixed bottom-32 right-4 rounded-full p-2 shadow-lg z-10"
+            size="sm"
+            onClick={scrollToBottom}
+          >
+            <ArrowDown className="w-4 h-4" />
+          </Button>
+        )}
+      </div>
+      
+      {/* Fixed Bottom Input Area - WhatsApp Style */}
+      {currentQuestion && (
+        <div className="border-t bg-background p-4">
+          <Card className="bhoomi-card">
+            <CardContent className="p-4">
+              {/* Options for select questions */}
+              {currentQuestion.options && (
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground mb-3">Choose an option:</p>
+                  {currentQuestion.options.map((option) => (
+                    <Button
+                      key={option}
+                      variant={selectedOptions[currentQuestionIndex] === option ? "default" : "outline"}
+                      size="sm"
+                      className="w-full justify-start text-left"
+                      onClick={() => handleOptionSelect(currentQuestionIndex, option)}
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                  {selectedOptions[currentQuestionIndex] && (
+                    <div className="flex gap-2 mt-3">
+                      <Button
+                        size="sm"
+                        onClick={() => currentQuestion.questionId && handleOptionNext(currentQuestionIndex, currentQuestion.questionId)}
+                        className="flex-1"
+                      >
+                        <Send className="w-4 h-4 mr-2" />
+                        Next
+                      </Button>
+                      {currentQuestion.allowSkip && (
                         <Button
-                          key={option}
-                          variant={selectedOptions[idx] === option ? "default" : "outline"}
+                          variant="ghost"
                           size="sm"
-                          className="w-full justify-start text-left"
-                          onClick={() => handleOptionSelect(idx, option)}
+                          onClick={() => handleSkip(currentQuestionIndex)}
                         >
-                          {option}
-                        </Button>
-                      ))}
-                      {selectedOptions[idx] && (
-                        <Button
-                          size="sm"
-                          onClick={() => msg.questionId && handleOptionNext(idx, msg.questionId)}
-                          className="w-full mt-2"
-                        >
-                          Next
+                          <SkipForward className="w-4 h-4 mr-1" />
+                          Skip
                         </Button>
                       )}
                     </div>
                   )}
-                  
-                  {/* Show input for number questions */}
-                  {msg.role === 'assistant' && msg.questionType === 'number' && !msg.options && msg.questionId !== 'userGoal' && !isDisabled && (
-                    <div className="mt-3 space-y-2">
-                      <div className="flex gap-2">
-                        <Input
-                          type="number"
-                          placeholder="Enter value"
-                          className="text-sm flex-1"
-                          id={`input-${idx}`}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                              const value = (e.target as HTMLInputElement).value;
-                              if (msg.questionId) handleAnswer(msg.questionId, value, idx);
-                            }
-                          }}
-                        />
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            const input = document.getElementById(`input-${idx}`) as HTMLInputElement;
-                            const value = input?.value || '';
-                            if (msg.questionId) handleAnswer(msg.questionId, value, idx);
-                          }}
-                        >
-                          Next
-                        </Button>
-                      </div>
-                      {msg.unit && <p className="text-xs text-muted-foreground">Unit: {msg.unit}</p>}
-                    </div>
-                  )}
-                  
-                  {/* Show textarea for goal question */}
-                  {msg.role === 'assistant' && msg.questionId === 'userGoal' && !isDisabled && (
-                    <div className="mt-3 space-y-2">
-                      <Textarea
-                        placeholder="e.g., Reduce CO2 emissions by 20%, explore circular economy options..."
-                        className="text-sm min-h-16"
-                        id={`textarea-${idx}`}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            const value = (e.target as HTMLTextAreaElement).value;
-                            if (value.trim()) handleAnswer('userGoal', value, idx);
-                          }
-                        }}
-                      />
-                      <Button
-                        size="sm"
-                        onClick={() => {
-                          const textarea = document.getElementById(`textarea-${idx}`) as HTMLTextAreaElement;
-                          const value = textarea?.value || '';
-                          if (value.trim()) handleAnswer('userGoal', value, idx);
-                        }}
-                        className="w-full"
-                      >
-                        Submit Goal
-                      </Button>
-                    </div>
-                  )}
-                  
-                  {/* Show skip button for skippable questions */}
-                  {msg.role === 'assistant' && msg.allowSkip && !isDisabled && (
-                    <div className="mt-2">
+                </div>
+              )}
+              
+              {/* Input for number questions */}
+              {currentQuestion.questionType === 'number' && !currentQuestion.options && currentQuestion.questionId !== 'userGoal' && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">Enter a numeric value:</p>
+                  <div className="flex gap-2">
+                    <Input
+                      type="number"
+                      placeholder="Enter value"
+                      className="flex-1"
+                      id={`current-input`}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          const value = (e.target as HTMLInputElement).value;
+                          if (currentQuestion.questionId) handleAnswer(currentQuestion.questionId, value, currentQuestionIndex);
+                        }
+                      }}
+                    />
+                    <Button
+                      onClick={() => {
+                        const input = document.getElementById(`current-input`) as HTMLInputElement;
+                        const value = input?.value || '';
+                        if (currentQuestion.questionId) handleAnswer(currentQuestion.questionId, value, currentQuestionIndex);
+                      }}
+                    >
+                      <Send className="w-4 h-4 mr-2" />
+                      Next
+                    </Button>
+                    {currentQuestion.allowSkip && (
                       <Button
                         variant="ghost"
-                        size="sm"
-                        onClick={() => handleSkip(idx)}
-                        className="text-xs"
+                        onClick={() => handleSkip(currentQuestionIndex)}
                       >
-                        <SkipForward className="w-3 h-3 mr-1" />
+                        <SkipForward className="w-4 h-4 mr-1" />
                         Skip
                       </Button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          
-          {/* Scroll to bottom button */}
-          {showScrollBottom && (
-            <Button
-              className="fixed bottom-20 right-4 rounded-full p-2 shadow-lg z-10"
-              size="sm"
-              onClick={scrollToBottom}
-            >
-              <ArrowDown className="w-4 h-4" />
-            </Button>
-          )}
+              )}
+              
+              {/* Textarea for goal question */}
+              {currentQuestion.questionId === 'userGoal' && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">Describe your goal for this LCA analysis:</p>
+                  <Textarea
+                    placeholder="e.g., Reduce CO2 emissions by 20%, explore circular economy options..."
+                    className="min-h-20"
+                    id={`current-textarea`}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        const value = (e.target as HTMLTextAreaElement).value;
+                        if (value.trim()) handleAnswer('userGoal', value, currentQuestionIndex);
+                      }
+                    }}
+                  />
+                  <Button
+                    onClick={() => {
+                      const textarea = document.getElementById(`current-textarea`) as HTMLTextAreaElement;
+                      const value = textarea?.value || '';
+                      if (value.trim()) handleAnswer('userGoal', value, currentQuestionIndex);
+                    }}
+                    className="w-full"
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    Submit Goal
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
-        
-        {/* Show action buttons after results */}
-        {quizState.results && (
+      )}
+      
+      {/* Show action buttons after results */}
+      {quizState.results && !currentQuestion && (
+        <div className="border-t bg-background p-4">
           <Card className="bhoomi-card">
             <CardContent className="pt-4">
               <div className="flex flex-wrap gap-3 justify-center">
@@ -468,28 +513,8 @@ const CircuBuddy = () => {
               </div>
             </CardContent>
           </Card>
-        )}
-        
-        {/* Free-form chat input (only show if not in active question flow) */}
-        {!isQuestionMode && (
-          <Card className="bhoomi-card">
-            <CardContent className="pt-4">
-              <div className="flex gap-2">
-                <Input
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Ask me about LCA, emissions, circularity..."
-                  onKeyPress={(e) => e.key === 'Enter' && handleChatSend()}
-                  className="flex-1"
-                />
-                <Button onClick={handleChatSend} size="sm">
-                  <Send className="w-4 h-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
