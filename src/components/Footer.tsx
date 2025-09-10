@@ -1,4 +1,5 @@
 import { Youtube, Linkedin, Mail } from "lucide-react";
+import fullLogo from "@/assets/fulllogo.png";
 
 const Footer = () => {
   return (
@@ -8,7 +9,11 @@ const Footer = () => {
           {/* Left Column - Logo and Description */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-primary" style={{fontFamily: 'Merienda One, cursive'}}>BhoomiPath</span>
+              <img 
+                src={fullLogo} 
+                alt="BhoomiPath" 
+                className="h-8 w-auto"
+              />
             </div>
             
             <p className="text-muted-foreground max-w-md">

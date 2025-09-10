@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
+import fullLogo from "@/assets/fulllogo.png";
 
 const Header = () => {
   const { isSignedIn, user } = useUser();
@@ -38,10 +39,13 @@ const Header = () => {
           <div className="text-2xl font-bold">
             <a
               href="/"
-              className="text-primary hover:text-primary/80 transition-colors"
-              style={{ fontFamily: "Merienda One, cursive" }}
+              className="hover:opacity-80 transition-opacity"
             >
-              BhoomiPath
+              <img 
+                src={fullLogo} 
+                alt="BhoomiPath" 
+                className="h-8 w-auto"
+              />
             </a>
           </div>
         </div>
