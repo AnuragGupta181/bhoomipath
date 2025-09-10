@@ -31,7 +31,7 @@ const NetworkSection = () => {
         {/* Network Visualization */}
         <div className="earthster-card rounded-2xl p-8 relative overflow-hidden flex justify-center items-center w-max mx-auto my-11">
           {/* Mock interface elements */}
-          <img src={hero} alt="mining" className="w-full h-full rounded-md object-cover" />
+          <img src={hero} alt="mining" className="w-80 h-64 rounded-md object-cover" />
         </div>
 
         {/* Description Text */}
