@@ -415,19 +415,21 @@ const EcoSathi = () => {
               {currentQuestion.options && (
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground mb-3">Choose an option:</p>
-                  {currentQuestion.options.map((option) => (
-                    <Button
-                      key={option}
-                      variant={selectedOptions[currentQuestionIndex] === option ? "default" : "outline"}
-                      size="sm"
-                      className="w-full justify-start text-left"
-                      onClick={() => handleOptionSelect(currentQuestionIndex, option)}
-                    >
-                      {option}
-                    </Button>
-                  ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-2xl">
+                    {currentQuestion.options.map((option) => (
+                      <Button
+                        key={option}
+                        variant={selectedOptions[currentQuestionIndex] === option ? "default" : "outline"}
+                        size="sm"
+                        className="justify-start text-left text-wrap p-3 h-auto min-h-[2.5rem]"
+                        onClick={() => handleOptionSelect(currentQuestionIndex, option)}
+                      >
+                        {option}
+                      </Button>
+                    ))}
+                  </div>
                   {selectedOptions[currentQuestionIndex] && (
-                    <div className="flex gap-2 mt-3">
+                    <div className="flex gap-2 mt-3 max-w-xs">
                       <Button
                         size="sm"
                         onClick={() => currentQuestion.questionId && handleOptionNext(currentQuestionIndex, currentQuestion.questionId)}
