@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSignIn } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
@@ -6,8 +8,12 @@ import Header from "@/components/Header";
 import videoHeader from "@/assets/VideoHeader_1080p.mp4";
 
 const SignIn = () => {
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -20,10 +26,30 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Sign in attempt:', formData);
-    // Handle sign-in logic here
+    if (!isLoaded) return;
+    
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const result = await signIn.create({
+        identifier: formData.email,
+        password: formData.password,
+      });
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        navigate("/ecosathi");
+      } else {
+        setError("Sign in failed. Please check your credentials.");
+      }
+    } catch (err: any) {
+      setError(err.errors?.[0]?.message || "An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -144,11 +170,16 @@ const SignIn = () => {
               </label>
             </div>
 
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
+
             <Button 
               type="submit" 
+              disabled={isLoading}
               className="earthster-btn-glow w-full py-3 text-lg font-semibold"
             >
-              SIGN IN
+              {isLoading ? "Signing In..." : "SIGN IN"}
             </Button>
 
             <div className="space-y-3 text-center text-sm">

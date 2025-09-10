@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -71,12 +72,20 @@ const Header = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-4">
-          <Button variant="outline" className="hidden md:inline-flex" asChild>
-            <a href="/signin">LOG IN</a>
-          </Button>
-          <Button className="earthster-btn-glow">
-            <a href="/ecosathi">Get Started</a>
-          </Button>
+          <SignedOut>
+            <Button variant="outline" className="hidden md:inline-flex" asChild>
+              <a href="/signin">LOG IN</a>
+            </Button>
+            <Button className="earthster-btn-glow">
+              <a href="/ecosathi">Get Started</a>
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <Button className="earthster-btn-glow">
+              <a href="/ecosathi">Dashboard</a>
+            </Button>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
 
           {/* Mobile Menu Button */}
           <Button
@@ -115,12 +124,22 @@ const Header = () => {
             Contact
           </a>
 
-          <Button variant="outline" asChild>
-            <a href="/signin">LOG IN</a>
-          </Button>
-          <Button className="earthster-btn-glow">
-            <a href="/ecosathi">Get Started</a>
-          </Button>
+          <SignedOut>
+            <Button variant="outline" asChild>
+              <a href="/signin">LOG IN</a>
+            </Button>
+            <Button className="earthster-btn-glow">
+              <a href="/ecosathi">Get Started</a>
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <Button className="earthster-btn-glow">
+              <a href="/ecosathi">Dashboard</a>
+            </Button>
+            <div className="pt-2">
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          </SignedIn>
         </div>
       )}
     </header>
