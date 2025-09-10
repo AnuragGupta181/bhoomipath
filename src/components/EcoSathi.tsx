@@ -342,7 +342,7 @@ const EcoSathi = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       {/* Header */}
-      <Card className="bhoomi-card m-4 mb-0">
+      <Card className="bhoomi-card m-4 mb-0 mt-20">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2  bhoomi-text-gradient text-lg text-size-xl font-bold">
             <MessageCircle className="w-5 h-5" />
