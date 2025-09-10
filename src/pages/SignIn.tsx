@@ -72,152 +72,152 @@ const SignIn = () => {
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
-      <div className="min-h-screen flex pt-20 relative z-10">
-      {/* Left Side - Content */}
-      <div className="flex-1 flex flex-col justify-center px-8 lg:px-16">
-        <div className="max-w-lg">
-          <div className="mb-8">
-            <p className="text-primary text-sm font-semibold tracking-wider uppercase mb-4">
-              LIFE CYCLE ASSESSMENT AT SCALE
-            </p>
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight drop-shadow-lg">
-              Understand and share footprints in minutes
-            </h1>
-          </div>
-
-          {/* Feature Columns */}
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="text-primary font-semibold text-lg mb-4">CONNECTED</h3>
-              <p className="text-white text-sm leading-relaxed drop-shadow-md">
-                Real <strong>compatible data</strong> from your suppliers, and{" "}
-                <strong>share your own</strong> like you've always wished.
+      <div className="min-h-screen flex flex-col lg:flex-row pt-16 lg:pt-20 relative z-10">
+        {/* Left Side - Content */}
+        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-16 py-8 lg:py-0">
+          <div className="max-w-lg mx-auto lg:mx-0">
+            <div className="mb-6 lg:mb-8 text-center lg:text-left">
+              <p className="text-primary text-xs sm:text-sm font-semibold tracking-wider uppercase mb-3 lg:mb-4">
+                LIFE CYCLE ASSESSMENT AT SCALE
               </p>
-            </div>
-            
-            <div>
-              <h3 className="text-primary font-semibold text-lg mb-4">ITERATIVE</h3>
-              <p className="text-white text-sm leading-relaxed drop-shadow-md">
-                See <strong>results</strong> of your calculation{" "}
-                <strong>as you input the data</strong>, so you focus on the most important.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-primary font-semibold text-lg mb-4">INTUITIVE</h3>
-              <p className="text-white text-sm leading-relaxed drop-shadow-md">
-                Build your model 10x faster, find data 10x faster, get{" "}
-                <strong>results 100x faster.</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Side - Sign In Form */}
-      <div className="w-full max-w-md flex flex-col justify-center px-8 m-8 bg-card/60 backdrop-blur-md rounded-2xl border border-border/30 shadow-lg">
-        <div className="w-full max-w-sm mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                className="earthster-input"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-6 lg:mb-8 leading-tight drop-shadow-lg">
+                Understand and share footprints in minutes
+              </h1>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  required
-                  className="earthster-input pr-12"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
-                </button>
+            {/* Feature Columns */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-6 lg:mb-8">
+              <div className="text-center lg:text-left">
+                <h3 className="text-primary font-semibold text-base lg:text-lg mb-2 lg:mb-4">CONNECTED</h3>
+                <p className="text-white text-xs sm:text-sm leading-relaxed drop-shadow-md">
+                  Real <strong>compatible data</strong> from your suppliers, and{" "}
+                  <strong>share your own</strong> like you've always wished.
+                </p>
+              </div>
+              
+              <div className="text-center lg:text-left">
+                <h3 className="text-primary font-semibold text-base lg:text-lg mb-2 lg:mb-4">ITERATIVE</h3>
+                <p className="text-white text-xs sm:text-sm leading-relaxed drop-shadow-md">
+                  See <strong>results</strong> of your calculation{" "}
+                  <strong>as you input the data</strong>, so you focus on the most important.
+                </p>
+              </div>
+              
+              <div className="text-center lg:text-left sm:col-span-2 lg:col-span-1">
+                <h3 className="text-primary font-semibold text-base lg:text-lg mb-2 lg:mb-4">INTUITIVE</h3>
+                <p className="text-white text-xs sm:text-sm leading-relaxed drop-shadow-md">
+                  Build your model 10x faster, find data 10x faster, get{" "}
+                  <strong>results 100x faster.</strong>
+                </p>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="remember"
-                checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-              />
-              <label htmlFor="remember" className="text-sm text-foreground cursor-pointer">
-                Remember me
-              </label>
-            </div>
+        {/* Right Side - Sign In Form */}
+        <div className="w-full lg:w-full lg:max-w-md flex flex-col justify-center px-4 sm:px-6 lg:px-8 mx-4 sm:mx-6 lg:mx-8 mb-8 lg:mb-0 bg-card/60 backdrop-blur-md rounded-2xl border border-border/30 shadow-lg">
+          <div className="w-full max-w-sm mx-auto py-6 lg:py-8">
+            <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="earthster-input w-full"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              </div>
 
-            {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
-            )}
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    required
+                    className="earthster-input w-full pr-12"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
 
-            <Button 
-              type="submit" 
-              disabled={isLoading}
-              className="earthster-btn-glow w-full py-3 text-lg font-semibold"
-            >
-              {isLoading ? "Signing In..." : "SIGN IN"}
-            </Button>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remember"
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                />
+                <label htmlFor="remember" className="text-sm text-foreground cursor-pointer">
+                  Remember me
+                </label>
+              </div>
 
-            <div className="space-y-3 text-center text-sm">
-              <p className="text-foreground">
-                Don't have an account?{" "}
-                <a href="/register" className="text-primary hover:underline">
-                  Register instead
-                </a>
-              </p>
-              
-              <p>
-                <a href="/forgot-password" className="text-foreground hover:text-primary">
-                  Forgot your password?
-                </a>
-              </p>
-              
-              <p>
-                <a href="/confirmation-instructions" className="text-foreground hover:text-primary">
-                  Didn't receive confirmation instructions?
-                </a>
-              </p>
-              
-              <p>
-                <a href="/unlock-instructions" className="text-foreground hover:text-primary">
-                  Didn't receive unlock instructions?
-                </a>
-              </p>
-              
-              <p>
-                <a href="/" className="text-foreground hover:text-primary">
-                  ← Back to start
-                </a>
-              </p>
-            </div>
-          </form>
+              {error && (
+                <div className="text-red-500 text-sm text-center">{error}</div>
+              )}
+
+              <Button 
+                type="submit" 
+                disabled={isLoading}
+                className="earthster-btn-glow w-full py-2 lg:py-3 text-base lg:text-lg font-semibold"
+              >
+                {isLoading ? "Signing In..." : "SIGN IN"}
+              </Button>
+
+              <div className="space-y-2 lg:space-y-3 text-center text-xs sm:text-sm">
+                <p className="text-foreground">
+                  Don't have an account?{" "}
+                  <a href="/register" className="text-primary hover:underline">
+                    Register instead
+                  </a>
+                </p>
+                
+                <p>
+                  <a href="/forgot-password" className="text-foreground hover:text-primary">
+                    Forgot your password?
+                  </a>
+                </p>
+                
+                <p>
+                  <a href="/confirmation-instructions" className="text-foreground hover:text-primary">
+                    Didn't receive confirmation instructions?
+                  </a>
+                </p>
+                
+                <p>
+                  <a href="/unlock-instructions" className="text-foreground hover:text-primary">
+                    Didn't receive unlock instructions?
+                  </a>
+                </p>
+                
+                <p>
+                  <a href="/" className="text-foreground hover:text-primary">
+                    ← Back to start
+                  </a>
+                </p>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
