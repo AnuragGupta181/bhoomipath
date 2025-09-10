@@ -89,7 +89,7 @@ const SignIn = () => {
       </div>
 
       {/* Right Side - Sign In Form */}
-      <div className="w-full max-w-md flex flex-col justify-center px-8 bg-card/80 backdrop-blur-md border-l border-border/50">
+      <div className="w-full max-w-md flex flex-col justify-center px-8 m-8 bg-card/60 backdrop-blur-md rounded-2xl border border-border/30 shadow-lg">
         <div className="w-full max-w-sm mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
