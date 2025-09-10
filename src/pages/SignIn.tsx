@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 import Header from "@/components/Header";
+import videoHeader from "@/assets/VideoHeader_1080p.mp4";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,9 +27,26 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Header />
-      <div className="min-h-screen flex earthster-hero-bg pt-20">
+      
+      {/* Background Video */}
+      <div className="fixed inset-0 w-full h-full z-0">
+        <video
+          className="w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src={videoHeader} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
+      </div>
+
+      <div className="min-h-screen flex pt-20 relative z-10">
       {/* Left Side - Content */}
       <div className="flex-1 flex flex-col justify-center px-8 lg:px-16">
         <div className="max-w-lg">
@@ -36,7 +54,7 @@ const SignIn = () => {
             <p className="text-primary text-sm font-semibold tracking-wider uppercase mb-4">
               LIFE CYCLE ASSESSMENT AT SCALE
             </p>
-            <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-8 leading-tight">
+            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight drop-shadow-lg">
               Understand and share footprints in minutes
             </h1>
           </div>
@@ -45,7 +63,7 @@ const SignIn = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <h3 className="text-primary font-semibold text-lg mb-4">CONNECTED</h3>
-              <p className="text-foreground text-sm leading-relaxed">
+              <p className="text-white text-sm leading-relaxed drop-shadow-md">
                 Real <strong>compatible data</strong> from your suppliers, and{" "}
                 <strong>share your own</strong> like you've always wished.
               </p>
@@ -53,7 +71,7 @@ const SignIn = () => {
             
             <div>
               <h3 className="text-primary font-semibold text-lg mb-4">ITERATIVE</h3>
-              <p className="text-foreground text-sm leading-relaxed">
+              <p className="text-white text-sm leading-relaxed drop-shadow-md">
                 See <strong>results</strong> of your calculation{" "}
                 <strong>as you input the data</strong>, so you focus on the most important.
               </p>
@@ -61,7 +79,7 @@ const SignIn = () => {
             
             <div>
               <h3 className="text-primary font-semibold text-lg mb-4">INTUITIVE</h3>
-              <p className="text-foreground text-sm leading-relaxed">
+              <p className="text-white text-sm leading-relaxed drop-shadow-md">
                 Build your model 10x faster, find data 10x faster, get{" "}
                 <strong>results 100x faster.</strong>
               </p>
@@ -71,7 +89,7 @@ const SignIn = () => {
       </div>
 
       {/* Right Side - Sign In Form */}
-      <div className="w-full max-w-md flex flex-col justify-center px-8 bg-card/30 backdrop-blur-sm border-l border-border">
+      <div className="w-full max-w-md flex flex-col justify-center px-8 bg-card/80 backdrop-blur-md border-l border-border/50">
         <div className="w-full max-w-sm mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
