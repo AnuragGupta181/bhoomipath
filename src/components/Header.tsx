@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 
 const Header = () => {
+  const { isSignedIn, user } = useUser();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,20 +73,30 @@ const Header = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-4">
-          <SignedOut>
-            <Button variant="outline" className="hidden md:inline-flex" asChild>
-              <a href="/signin">LOG IN</a>
-            </Button>
-            <Button className="earthster-btn-glow">
-              <a href="/ecosathi">Get Started</a>
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <Button className="earthster-btn-glow">
-              <a href="/ecosathi">Dashboard</a>
-            </Button>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
+          {!isSignedIn ? (
+            <>
+              <Button variant="outline" className="hidden md:inline-flex" asChild>
+                <a href="/signin">LOG IN</a>
+              </Button>
+              <Button className="earthster-btn-glow">
+                <a href="/ecosathi">Get Started</a>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button className="earthster-btn-glow">
+                <a href="/ecosathi">Dashboard</a>
+              </Button>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-foreground hidden md:inline">
+                  {user?.firstName || user?.emailAddresses[0]?.emailAddress}
+                </span>
+                <Button variant="outline" size="sm" onClick={() => window.location.href = '/api/auth/signout'}>
+                  Sign Out
+                </Button>
+              </div>
+            </>
+          )}
 
           {/* Mobile Menu Button */}
           <Button
@@ -124,22 +135,25 @@ const Header = () => {
             Contact
           </a>
 
-          <SignedOut>
-            <Button variant="outline" asChild>
-              <a href="/signin">LOG IN</a>
-            </Button>
-            <Button className="earthster-btn-glow">
-              <a href="/ecosathi">Get Started</a>
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <Button className="earthster-btn-glow">
-              <a href="/ecosathi">Dashboard</a>
-            </Button>
-            <div className="pt-2">
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          </SignedIn>
+          {!isSignedIn ? (
+            <>
+              <Button variant="outline" asChild>
+                <a href="/signin">LOG IN</a>
+              </Button>
+              <Button className="earthster-btn-glow">
+                <a href="/ecosathi">Get Started</a>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button className="earthster-btn-glow">
+                <a href="/ecosathi">Dashboard</a>
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => window.location.href = '/api/auth/signout'}>
+                Sign Out
+              </Button>
+            </>
+          )}
         </div>
       )}
     </header>
