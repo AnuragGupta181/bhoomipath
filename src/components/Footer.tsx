@@ -40,7 +40,16 @@ const Footer = () => {
                 <a href="#privacy" className="block text-foreground hover:text-primary transition-colors">
                   Privacy policy
                 </a>
-                <a href="#contact" className="block text-foreground hover:text-primary transition-colors">
+                <a 
+                  href="/#contact" 
+                  className="block text-foreground hover:text-primary transition-colors"
+                  onClick={(e) => {
+                    if (window.location.pathname === '/') {
+                      e.preventDefault();
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
                   Contact
                 </a>
               </div>

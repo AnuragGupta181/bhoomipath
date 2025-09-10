@@ -55,7 +55,16 @@ const Header = () => {
           <a href="#blog" className="text-foreground hover:text-primary font-bold transition-colors">
             Blog
           </a>
-          <a href="#contact" className="text-foreground hover:text-primary font-bold transition-colors">
+          <a 
+            href="#contact" 
+            className="text-foreground hover:text-primary font-bold transition-colors"
+            onClick={(e) => {
+              if (window.location.pathname === '/') {
+                e.preventDefault();
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
             Contact
           </a>
         </nav>
@@ -93,7 +102,16 @@ const Header = () => {
           <a href="#blog" className="text-foreground hover:text-primary transition-colors">
             Blog
           </a>
-          <a href="#contact" className="text-foreground hover:text-primary transition-colors">
+          <a 
+            href="#contact" 
+            className="text-foreground hover:text-primary transition-colors"
+            onClick={(e) => {
+              if (window.location.pathname === '/') {
+                e.preventDefault();
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
             Contact
           </a>
 

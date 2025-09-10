@@ -25,7 +25,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section id="contact" className="relative py-20 overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
