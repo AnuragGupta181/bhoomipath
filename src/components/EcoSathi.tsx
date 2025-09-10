@@ -8,6 +8,7 @@ import { RotateCcw, Download, MessageCircle, Send, SkipForward, ArrowDown } from
 import { quizQuestions } from '@/data/quizQuestions';
 import { QuizState, QuizData, QuizPayload } from '@/types/quiz';
 import { useToast } from '@/hooks/use-toast';
+import Header from '@/components/Header';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -339,6 +340,7 @@ const EcoSathi = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <Header />
       {/* Header */}
       <Card className="bhoomi-card m-4 mb-0">
         <CardHeader className="pb-3">
