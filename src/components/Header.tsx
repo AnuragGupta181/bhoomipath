@@ -46,16 +46,16 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="/" className="text-foreground hover:text-primary transition-colors">
+          <a href="/" className="text-foreground hover:text-primary font-bold transition-colors">
             Home
           </a>
-          <a href="/ecosathi" className="text-foreground hover:text-primary transition-colors">
+          <a href="/ecosathi" className="text-foreground hover:text-primary font-bold transition-colors">
             Services
           </a>
-          <a href="#blog" className="text-foreground hover:text-primary transition-colors">
+          <a href="#blog" className="text-foreground hover:text-primary font-bold transition-colors">
             Blog
           </a>
-          <a href="#contact" className="text-foreground hover:text-primary transition-colors">
+          <a href="#contact" className="text-foreground hover:text-primary font-bold transition-colors">
             Contact
           </a>
         </nav>

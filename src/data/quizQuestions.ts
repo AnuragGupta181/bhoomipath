@@ -12,7 +12,7 @@ export const quizQuestions: Question[] = [
     id: 'Metal',
     title: 'Which metal are you working with?',
     type: 'select',
-    options: ['Aluminium', 'Copper', 'Steel', 'Lithium', 'Cobalt', 'Nickel', 'Other'],
+    options: ['Aluminium', 'Copper', 'Steel'],
     required: true
   },
   {

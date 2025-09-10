@@ -6,6 +6,14 @@
 All colors MUST be HSL.
 */
 
+
+@theme inline {
+  /* Configure your theme variables here */
+  --font-display: "Inter", "sans-serif";
+  --color-primary-500: oklch(0.84 0.18 117.33);
+  --spacing: 0.25rem;
+}
+
 @layer base {
   :root {
     /* BhoomiPath Light Theme Colors */
@@ -48,7 +56,7 @@ All colors MUST be HSL.
     --bhoomi-chocolate: 31 89% 28%;    /* text */
     
     /* Light Theme Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--bhoomi-avocado)), hsl(var(--bhoomi-earth-yellow)));
+    --gradient-primary: linear-gradient(180deg, #69A619 0%, #B9E346 , #76B327 0%);
     --gradient-hero: linear-gradient(180deg, hsl(var(--bhoomi-vanilla)), hsl(var(--bhoomi-vanilla-light)));
     --gradient-card: linear-gradient(145deg, hsl(var(--bhoomi-vanilla-light)), hsl(var(--bhoomi-vanilla)));
     

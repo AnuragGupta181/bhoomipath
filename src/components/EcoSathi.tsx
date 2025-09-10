@@ -344,7 +344,7 @@ const EcoSathi = () => {
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2  bhoomi-text-gradient text-lg text-size-xl font-bold">
             <MessageCircle className="w-5 h-5" />
-            Eco Sathi Your Personal LCA Assistant
+            <h1>Eco Sathi Your Personal LCA Assistant</h1>
           </CardTitle>
         </CardHeader>
       </Card>

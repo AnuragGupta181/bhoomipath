@@ -1,5 +1,6 @@
 import earthHero from "@/assets/earth-hero.jpg";
 import networkBg from "@/assets/network-bg.jpg";
+import hero from "@/assets/lca.png";
 
 const NetworkSection = () => {
   return (
@@ -19,7 +20,7 @@ const NetworkSection = () => {
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-block bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-8 mb-8">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Bring the cost per LCA <span className="earthster-text-gradient">down to 10£/LCA</span>
+              Bring the cost per LCA <span className="earthster-text-gradient">down to 10$/LCA</span>
             </h2>
             <p className="text-muted-foreground text-sm">
               *based on customer case study, exact amount may vary
@@ -28,28 +29,9 @@ const NetworkSection = () => {
         </div>
 
         {/* Network Visualization */}
-        <div className="relative max-w-4xl mx-auto mb-16">
-          <div className="relative h-96 flex items-center justify-center">
-            {/* Earth in center */}
-            <div className="relative z-10">
-              <img 
-                src={earthHero} 
-                alt="Earth" 
-                className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover animate-pulse-glow"
-              />
-            </div>
-
-            {/* Network Nodes */}
-            <div className="absolute top-8 left-8 w-12 h-12 earthster-network-node animate-float"></div>
-            <div className="absolute top-16 right-12 w-8 h-8 earthster-network-node animate-float" style={{animationDelay: '0.5s'}}></div>
-            <div className="absolute bottom-20 left-16 w-16 h-16 earthster-network-node animate-float" style={{animationDelay: '1s'}}></div>
-            <div className="absolute bottom-8 right-8 w-6 h-6 earthster-network-node animate-float" style={{animationDelay: '1.5s'}}></div>
-
-            {/* Connection Lines */}
-            <div className="absolute top-14 left-20 w-32 h-px earthster-network-line transform rotate-45"></div>
-            <div className="absolute top-22 right-20 w-24 h-px earthster-network-line transform -rotate-45"></div>
-            <div className="absolute bottom-32 left-32 w-40 h-px earthster-network-line transform rotate-12"></div>
-          </div>
+        <div className="earthster-card rounded-2xl p-8 relative overflow-hidden flex justify-center items-center w-max mx-auto my-11">
+          {/* Mock interface elements */}
+          <img src={hero} alt="mining" className="w-full h-full rounded-md object-cover" />
         </div>
 
         {/* Description Text */}

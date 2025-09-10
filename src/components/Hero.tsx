@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import earthHero from "@/assets/earth-hero.jpg";
+import ColourfulText from "./ui/colourful-text";
+import { VideoText } from "./magicui/video-text";
 
 const Hero = () => {
   return (
@@ -16,11 +18,18 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 relative z-10 text-center">
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-            Calculate and communicate{" "}
-            <span className="earthster-text-gradient">environmental sustainability</span>{" "}
-            of ALL your products
-          </h1>
+<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+  {/* group that can wrap on small screens, but is non-wrapping on lg+ */}
+  <span className="lg:whitespace-nowrap">
+    <span className="block lg:inline">Calculate and</span>{" "}
+    <span className="block lg:inline">Communicate</span>
+  </span>{" "}
+  {/* allow this to wrap naturally if needed, or add lg:whitespace-nowrap to pin it on lg+ */}
+  <span className="earthster-text-gradient">Environmental Sustainability</span>{" "}
+  <span className="whitespace-nowrap">of ALL your Products</span>
+</h1>
+
+
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             The fastest, most scalable and most intuitive way to do Life Cycle Assessment
