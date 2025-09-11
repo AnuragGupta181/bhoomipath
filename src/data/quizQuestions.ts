@@ -5,7 +5,7 @@ export const quizQuestions: Question[] = [
     id: 'Process_Type',
     title: 'What type of process are you analyzing?',
     type: 'select',
-    options: ['Primary Production', 'Secondary Production', 'Recycling', 'Refining', 'Processing'],
+    options: ['Primary', 'Secondary'],
     required: true
   },
   {
@@ -51,7 +51,7 @@ export const quizQuestions: Question[] = [
     id: 'Transport_Mode',
     title: 'Primary transportation method?',
     type: 'select',
-    options: ['Truck', 'Rail', 'Ship', 'Plane', 'Pipeline', 'Mixed'],
+    options: ['Truck', 'Ship', 'Train'],
     required: true
   },
   {
@@ -74,14 +74,14 @@ export const quizQuestions: Question[] = [
     id: 'End_of_Life',
     title: 'End-of-life scenario?',
     type: 'select',
-    options: ['Recycling', 'Landfill', 'Incineration', 'Reuse', 'Unknown'],
+    options: ['Recycle', 'Landfill', 'Reuse'],
     required: true
   },
   {
     id: 'Circularity_option',
     title: 'Circularity approach?',
     type: 'select',
-    options: ['Full Recycling', 'Partial Recycling', 'Material Recovery', 'No Circularity', 'Design for Circularity'],
+    options: ['Closed-loop', 'Open-loop'],
     required: true
   },
   {

@@ -41,8 +41,15 @@ const FAQ = () => {
 
   return (
     <section className="py-20">
-      <div className="container mx-auto px-4 max-w-4xl">
+      <div className="container mx-auto my-10 px-7 max-w-4xl">
+        <div>       
+           <h2 className="text-3xl text-center  md:text-5xl font-bold mb-2">
+						<span className="earthster-text-gradient">FAQ's</span>
+					</h2>
         <div className="space-y-4">
+          </div>
+
+          
           {faqs.map((faq, index) => (
             <div 
               key={index}

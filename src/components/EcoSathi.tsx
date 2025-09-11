@@ -109,7 +109,7 @@ const EcoSathi = () => {
     
     const questionMessage: ChatMessage = {
       role: 'assistant',
-      content: `Question ${questionIndex + 1} of ${totalQuestions} (${progress}% complete): ${question.title}`,
+      content: `Question ${questionIndex + 1} of ${totalQuestions}: ${question.title}`,
       options: question.options,
       questionId: question.id,
       questionType: question.type,
@@ -237,13 +237,23 @@ const EcoSathi = () => {
     };
 
     try {
-      const response = await fetch('https://sih-backend-d411.onrender.com/insights/', {
+      const response = await fetch('http://127.0.0.1:8000/insights/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      const results = await response.json();
+       console.log("📡 Raw response:", response);
+
+  if (!response.ok) {
+    console.error("❌ Response not OK:", response.status, response.statusText);
+  }
+
+  const results = await response.json();
+  console.log("✅ Parsed results:", results);
+
+
+  
       setQuizState(prev => ({ ...prev, isSubmitting: false, results }));
       
       const resultMessage = typeof results === 'string' ? results : JSON.stringify(results, null, 2);
@@ -253,10 +263,13 @@ const EcoSathi = () => {
       ]);
       
       toast({
+        
         title: "Analysis Complete!",
         description: "Your LCA results are ready.",
       });
     } catch (error) {
+      console.error("🔥 Fetch error:", error);
+
       setQuizState(prev => ({ ...prev, isSubmitting: false }));
       setChatMessages(prev => [...prev, 
         { role: 'assistant', content: '❌ Network error. Would you like to retry or export your data?' }
